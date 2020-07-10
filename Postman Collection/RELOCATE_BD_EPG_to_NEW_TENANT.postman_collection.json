@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "100b34e8-2e39-4b93-94cd-9814e21c92b9",
+		"name": "RELOCATE_BD_EPG_to_NEW_TENANT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BD Relocation to New Tenant",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"totalCount\": \"1\",\r\n  \"imdata\": [\r\n    {\r\n      \"fvBD\": {\r\n        \"attributes\": {\r\n          \"OptimizeWanBandwidth\": \"no\",\r\n          \"annotation\": \"\",\r\n          \"arpFlood\": \"no\",\r\n          \"descr\": \"\",\r\n          \"dn\": \"uni/tn-NON_PRODUCTION/BD-BD_{{BD}}_24\",\r\n          \"epClear\": \"no\",\r\n          \"epMoveDetectMode\": \"\",\r\n          \"intersiteBumTrafficAllow\": \"no\",\r\n          \"intersiteL2Stretch\": \"no\",\r\n          \"ipLearning\": \"yes\",\r\n          \"limitIpLearnToSubnets\": \"yes\",\r\n          \"llAddr\": \"::\",\r\n          \"mac\": \"00:22:BD:F8:19:FF\",\r\n          \"mcastAllow\": \"no\",\r\n          \"multiDstPktAct\": \"bd-flood\",\r\n          \"name\": \"BD_{{BD}}_24\",\r\n          \"nameAlias\": \"\",\r\n          \"ownerKey\": \"\",\r\n          \"ownerTag\": \"\",\r\n          \"type\": \"regular\",\r\n          \"unicastRoute\": \"no\",\r\n          \"unkMacUcastAct\": \"proxy\",\r\n          \"unkMcastAct\": \"flood\",\r\n          \"vmac\": \"not-applicable\"\r\n        },\r\n        \"children\": [\r\n          {\r\n            \"fvSubnet\": {\r\n              \"attributes\": {\r\n                \"annotation\": \"\",\r\n                \"ctrl\": \"\",\r\n                \"descr\": \"\",\r\n                \"ip\": \"{{IP}}/24\",\r\n                \"name\": \"\",\r\n                \"nameAlias\": \"\",\r\n                \"preferred\": \"no\",\r\n                \"scope\": \"private\",\r\n                \"virtual\": \"no\"\r\n              }\r\n            }\r\n          },\r\n          {\r\n            \"fvRsIgmpsn\": {\r\n              \"attributes\": {\r\n                \"annotation\": \"\",\r\n                \"tnIgmpSnoopPolName\": \"\"\r\n              }\r\n            }\r\n          },\r\n          {\r\n            \"fvRsCtx\": {\r\n              \"attributes\": {\r\n                \"annotation\": \"\",\r\n                \"tnFvCtxName\": \"vrf_qa_test\"\r\n              }\r\n            }\r\n          },\r\n          {\r\n            \"fvRsBdToEpRet\": {\r\n              \"attributes\": {\r\n                \"annotation\": \"\",\r\n                \"resolveAct\": \"resolve\",\r\n                \"tnFvEpRetPolName\": \"\"\r\n              }\r\n            }\r\n          },\r\n          {\r\n            \"fvRsBDToNdP\": {\r\n              \"attributes\": {\r\n                \"annotation\": \"\",\r\n                \"tnNdIfPolName\": \"\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "https://10.215.27.101/api/node/mo/uni/tn-NON_PRODUCTION/BD-BD_{{BD}}_24.json",
+					"protocol": "https",
+					"host": [
+						"10",
+						"215",
+						"27",
+						"101"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-NON_PRODUCTION",
+						"BD-BD_{{BD}}_24.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete EPG From common",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"fvAEPg\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-common/ap-CORP/epg-dyn_{{BD}}_24\",\n          \"exceptionTag\": \"\",\n          \"floodOnEncap\": \"disabled\",\n          \"fwdCtrl\": \"\",\n          \"isAttrBasedEPg\": \"no\",\n          \"matchT\": \"AtleastOne\",\n          \"name\": \"dyn_{{BD}}_24\",\n          \"nameAlias\": \"\",\n          \"pcEnfPref\": \"unenforced\",\n          \"prefGrMemb\": \"include\",\n          \"prio\": \"unspecified\"\n        },\n        \"children\": [\n          {\n            \"fvRsPathAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"encap\": \"\",\n                \"instrImedcy\": \"immediate\",\n                \"mode\": \"regular\",\n                \"primaryEncap\": \"unknown\",\n                \"tDn\": \"topology/pod-2/protpaths-400-401/pathep-[Legacy_5K-VPC-400e43-e44-401e43-e44]\"\n                \"status\": \"deleted\"\n              }\n            }\n         }   \n     } \n },"
+				},
+				"url": {
+					"raw": "https://10.215.27.101/api/node/mo/uni/tn-common/ap-CORP/epg-dyn_{{BD}}_24.json",
+					"protocol": "https",
+					"host": [
+						"10",
+						"215",
+						"27",
+						"101"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-common",
+						"ap-CORP",
+						"epg-dyn_{{BD}}_24.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EPG Relocation to New Tenant",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"fvAEPg\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-NON_PRODUCTION/ap-NON_PROD/epg-dyn_{{BD}}_24\",\n          \"exceptionTag\": \"\",\n          \"floodOnEncap\": \"disabled\",\n          \"fwdCtrl\": \"\",\n          \"isAttrBasedEPg\": \"no\",\n          \"matchT\": \"AtleastOne\",\n          \"name\": \"dyn_{{BD}}_24\",\n          \"nameAlias\": \"\",\n          \"pcEnfPref\": \"unenforced\",\n          \"prefGrMemb\": \"include\",\n          \"prio\": \"unspecified\"\n        },\n        \"children\": [\n          {\n            \"fvRsPathAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"encap\": \"vlan-{{VLAN}}\",\n                \"instrImedcy\": \"immediate\",\n                \"mode\": \"regular\",\n                \"primaryEncap\": \"unknown\",\n                \"tDn\": \"topology/pod-2/protpaths-400-401/pathep-[Legacy_5K-VPC-400e43-e44-401e43-e44]\"\n              }\n            }\n          },\n          {\n            \"fvRsDomAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"classPref\": \"encap\",\n                \"delimiter\": \"\",\n                \"encap\": \"unknown\",\n                \"encapMode\": \"auto\",\n                \"epgCos\": \"Cos0\",\n                \"epgCosPref\": \"disabled\",\n                \"instrImedcy\": \"immediate\",\n                \"netflowDir\": \"both\",\n                \"netflowPref\": \"disabled\",\n                \"primaryEncap\": \"unknown\",\n                \"primaryEncapInner\": \"unknown\",\n                \"resImedcy\": \"immediate\",\n                \"secondaryEncapInner\": \"unknown\",\n                \"switchingMode\": \"native\",\n                \"tDn\": \"uni/vmmp-VMware/dom-vdc02_ACI_NON_PRODUCTION\"\n              },\n              \"children\": [\n                {\n                  \"vmmSecP\": {\n                    \"attributes\": {\n                      \"allowPromiscuous\": \"reject\",\n                      \"annotation\": \"\",\n                      \"descr\": \"\",\n                      \"forgedTransmits\": \"reject\",\n                      \"macChanges\": \"reject\",\n                      \"name\": \"\",\n                      \"nameAlias\": \"\",\n                      \"ownerKey\": \"\",\n                      \"ownerTag\": \"\"\n                    }\n                  }\n                }\n              ]\n            }\n          },\n          {\n            \"fvRsDomAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"classPref\": \"encap\",\n                \"delimiter\": \"\",\n                \"encap\": \"unknown\",\n                \"encapMode\": \"auto\",\n                \"epgCos\": \"Cos0\",\n                \"epgCosPref\": \"disabled\",\n                \"instrImedcy\": \"lazy\",\n                \"netflowDir\": \"both\",\n                \"netflowPref\": \"disabled\",\n                \"primaryEncap\": \"unknown\",\n                \"primaryEncapInner\": \"unknown\",\n                \"resImedcy\": \"lazy\",\n                \"secondaryEncapInner\": \"unknown\",\n                \"switchingMode\": \"native\",\n                \"tDn\": \"uni/phys-PHY_DOM\"\n              }\n            }\n          },\n          {\n            \"fvRsCons\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"prio\": \"unspecified\",\n                \"tnVzBrCPName\": \"FW_QATEST_L3OUT_Con\"\n              }\n            }\n          },\n          {\n            \"fvRsCustQosPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnQosCustomPolName\": \"\"\n              }\n            }\n          },\n          {\n            \"fvRsBd\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFvBDName\": \"BD_{{BD}}_24\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://10.215.27.101/api/node/mo/uni/tn-NON_PRODUCTION/ap-NON_PROD/epg-dyn_{{BD}}_24.json",
+					"protocol": "https",
+					"host": [
+						"10",
+						"215",
+						"27",
+						"101"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-NON_PRODUCTION",
+						"ap-NON_PROD",
+						"epg-dyn_{{BD}}_24.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

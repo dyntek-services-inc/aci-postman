@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "a51afc6e-832c-48da-a56c-9f0dbd185581",
+		"name": "BD_EPG_STATICBINDING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create BD",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"fvBD\": {\n        \"attributes\": {\n          \"OptimizeWanBandwidth\": \"no\",\n          \"annotation\": \"\",\n          \"arpFlood\": \"yes\",\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-DMZ/BD-BD_{{BD_NAME}}\",\n          \"epClear\": \"no\",\n          \"epMoveDetectMode\": \"\",\n          \"intersiteBumTrafficAllow\": \"no\",\n          \"intersiteL2Stretch\": \"no\",\n          \"ipLearning\": \"yes\",\n          \"limitIpLearnToSubnets\": \"yes\",\n          \"llAddr\": \"::\",\n          \"mac\": \"00:22:BD:F8:19:FF\",\n          \"mcastAllow\": \"no\",\n          \"multiDstPktAct\": \"bd-flood\",\n          \"name\": \"BD_{{BD_NAME}}\",\n          \"nameAlias\": \"\",\n          \"ownerKey\": \"\",\n          \"ownerTag\": \"\",\n          \"type\": \"regular\",\n          \"unicastRoute\": \"no\",\n          \"unkMacUcastAct\": \"flood\",\n          \"unkMcastAct\": \"flood\",\n          \"vmac\": \"not-applicable\"\n        },\n        \"children\": [\n          {\n            \"igmpIfP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"name\": \"\",\n                \"nameAlias\": \"\"\n              }\n            }\n          },\n          {\n            \"fvRsIgmpsn\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnIgmpSnoopPolName\": \"\"\n              }\n            }\n          },\n          {\n            \"fvRsCtx\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFvCtxName\": \"vrf_dmz_l2\"\n              }\n            }\n          },\n          {\n            \"fvRsBdToEpRet\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"resolveAct\": \"resolve\",\n                \"tnFvEpRetPolName\": \"\"\n              }\n            }\n          },\n          {\n            \"fvRsBDToNdP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnNdIfPolName\": \"\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-DMZ/BD-BD_{{BD_NAME}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-DMZ",
+						"BD-BD_{{BD_NAME}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create EPG",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"fvAEPg\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-DMZ/ap-DMZ/epg-V{{ENCAP}}_{{EPG_NAME}}\",\n          \"exceptionTag\": \"\",\n          \"floodOnEncap\": \"disabled\",\n          \"fwdCtrl\": \"\",\n          \"isAttrBasedEPg\": \"no\",\n          \"matchT\": \"AtleastOne\",\n          \"name\": \"V{{ENCAP}}_{{EPG_NAME}}\",\n          \"nameAlias\": \"\",\n          \"pcEnfPref\": \"unenforced\",\n          \"prefGrMemb\": \"include\",\n          \"prio\": \"unspecified\"\n        },\n        \"children\": [\n          {\n            \"fvRsPathAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"encap\": \"vlan-{{ENCAP}}\",\n                \"instrImedcy\": \"immediate\",\n                \"mode\": \"regular\",\n                \"primaryEncap\": \"unknown\",\n                \"tDn\": \"topology/pod-1/paths-708/pathep-[eth1/46]\"\n              }\n            }\n          },\n          {\n            \"fvRsPathAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"encap\": \"vlan-{{ENCAP}}\",\n                \"instrImedcy\": \"immediate\",\n                \"mode\": \"regular\",\n                \"primaryEncap\": \"unknown\",\n                \"tDn\": \"topology/pod-1/protpaths-800-801/pathep-[PALO-ALTO-NAP7-DMZ-BL800e14-BL801e14]\"\n              }\n            }\n          },\n          {\n            \"fvRsPathAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"encap\": \"vlan-{{ENCAP}}\",\n                \"instrImedcy\": \"immediate\",\n                \"mode\": \"regular\",\n                \"primaryEncap\": \"unknown\",\n                \"tDn\": \"topology/pod-2/protpaths-500-501/pathep-[PALO-ALTO-NAP4-DMZ-BL500e14-BL501e14]\"\n              }\n            }\n          },\n          {\n            \"fvRsDomAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"classPref\": \"encap\",\n                \"delimiter\": \"\",\n                \"encap\": \"unknown\",\n                \"encapMode\": \"auto\",\n                \"epgCos\": \"Cos0\",\n                \"epgCosPref\": \"disabled\",\n                \"instrImedcy\": \"lazy\",\n                \"netflowDir\": \"both\",\n                \"netflowPref\": \"disabled\",\n                \"primaryEncap\": \"unknown\",\n                \"primaryEncapInner\": \"unknown\",\n                \"resImedcy\": \"immediate\",\n                \"secondaryEncapInner\": \"unknown\",\n                \"switchingMode\": \"native\",\n                \"tDn\": \"uni/phys-PHY_DOM\"\n              }\n            }\n          },\n          {\n            \"fvRsCustQosPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnQosCustomPolName\": \"\"\n              }\n            }\n          },\n          {\n            \"fvRsBd\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFvBDName\": \"BD_{{BD_NAME}}\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-DMZ/ap-DMZ/epg-V{{ENCAP}}_{{EPG_NAME}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-DMZ",
+						"ap-DMZ",
+						"epg-V{{ENCAP}}_{{EPG_NAME}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

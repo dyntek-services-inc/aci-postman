@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "9489c75c-e9f2-4e74-8943-620acf7e5f72",
+		"name": "TEMP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Contract and Subject",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"vzBrCP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/brc-{{L3OUT}}_{{AP}}_Con\",\n      \"name\": \"{{L3OUT}}_{{AP}}_Con\",\n      \"rn\": \"brc-{{L3OUT}}_{{AP}}_Con\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"vzSubj\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/brc-{{L3OUT}}_{{AP}}_Con/subj-{{L3OUT}}_{{AP}}_Subj\",\n            \"name\": \"{{L3OUT}}_{{AP}}_Subj\",\n            \"rn\": \"subj-{{L3OUT}}_{{AP}}_Subj\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"vzRsSubjFiltAtt\": {\n                \"attributes\": {\n                  \"status\": \"created,modified\",\n                  \"tnVzFilterName\": \"default\",\n                  \"directives\": \"none\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consume Contract from EPG Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvRsCons\": {\n    \"attributes\": {\n      \"tnVzBrCPName\": \"NAP7_CORP_L3OUT_MGMT_Con\"\n    },\n    \"children\": []\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{AP}}",
+						"epg-{{EPG}}.json"
+					]
+				},
+				"description": "\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Provide Contract to L3OUT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvRsProv\": {\n    \"attributes\": {\n      \"tnVzBrCPName\": \"{{L3OUT}}_{{AP}}_Con\"\n    },\n    \"children\": []\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT}}/instP-{{SEPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"out-{{L3OUT}}",
+						"instP-{{SEPG}}.json"
+					]
+				},
+				"description": "\n\n"
+			},
+			"response": []
+		}
+	]
+}

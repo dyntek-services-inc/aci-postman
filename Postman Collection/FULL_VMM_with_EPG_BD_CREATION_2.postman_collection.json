@@ -1,0 +1,599 @@
+{
+	"info": {
+		"_postman_id": "5938460b-b738-4faa-8c22-6e3cc2e83c5b",
+		"name": "FULL_VMM_with_EPG_BD_CREATION_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "#1 - NAP4_L2-VPC-Configuration_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy_Group_1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccBndlGrp\": {\n    \"attributes\": {\n      \"annotation\": \"\",\n      \"descr\": \"\",\n      \"dn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}\",\n      \"lagT\": \"node\",\n      \"name\": \"{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}\",\n      \"nameAlias\": \"\",\n      \"ownerKey\": \"\",\n      \"ownerTag\": \"\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tDn\": \"uni/infra/attentp-PHY_DOM_AEP\"\n          }\n        }\n      },\n      {\n        \"infraRsCdpIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnCdpIfPolName\": \"CDP_OFF\"\n          }\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnFabricHIfPolName\": \"{{INTPOL}}\"\n          }\n        }\n      },\n      {\n        \"infraRsLacpPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnLacpLagPolName\": \"{{LACPPOL}}\"\n          }\n        }\n      },\n      {\n        \"infraRsStpIfPol\": {\n          \"attributes\": {\n            \"tnStpIfPolName\": \"BPDU_FILTER_ENABLED\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsLldpIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnLldpIfPolName\": \"LLDP_ON\"\n          }\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interface Create and Attach to ifselector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT1}}\",\n            \"toPort\": \"{{INT2}}\",\n            \"descr\": \"{{INT_DESCRIPTION}} {{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector",
+								"hports-{{IFNAME}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interface Create and Attach to ifselector Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME1}}-typ-range\",\n      \"name\": \"{{IFNAME1}}\",\n      \"rn\": \"hports-{{IFNAME1}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME1}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT3}}\",\n            \"toPort\": \"{{INT4}}\",\n            \"descr\": \"{{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME1}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector",
+								"hports-{{IFNAME1}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "#2 - NAP4_HIPE1_BD-EPG-Configuration_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE VRF/BD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvTenant\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"fvBD\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/BD-BD_{{IP}}_{{MASK}}\",\n            \"name\": \"BD_{{IP}}_{{MASK}}\",\n            \"unkMacUcastAct\": \"flood\",\n            \"unicastRoute\": \"false\",\n            \"arpFlood\": \"true\",\n            \"rn\": \"BD-BD_{{IP}}_{{MASK}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"fvRsCtx\": {\n                \"attributes\": {\n                  \"tnFvCtxName\": \"{{VRF}}\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"fvCtx\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/ctx-{{VRF}}\",\n            \"name\": \"{{VRF}}\",\n            \"rn\": \"ctx-{{VRF}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create EPG",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"polUni\": {\n    \"attributes\": {\n      \"dn\": \"uni\"\n    },\n    \"children\": [\n      {\n        \"fvTenant\": {\n          \"attributes\": {\n            \"descr\": \"\",\n            \"dn\": \"uni/tn-{{TENANT}}\",\n            \"name\": \"{{TENANT}}\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n          },\n          \"children\": [\n            {\n              \"fvAp\": {\n                \"attributes\": {\n                  \"descr\": \"\",\n                  \"dn\": \"\",\n                  \"name\": \"{{AP}}\",\n                  \"ownerKey\": \"\",\n                  \"ownerTag\": \"\",\n                  \"prio\": \"unspecified\"\n                },\n                \"children\": [\n                  {\n                    \"fvAEPg\": {\n                      \"attributes\": {\n                        \"descr\": \"\",\n                        \"dn\": \"\",\n                        \"isAttrBasedEPg\": \"no\",\n                        \"matchT\": \"AtleastOne\",\n                        \"name\": \"{{EPG}}\",\n                        \"pcEnfPref\": \"unenforced\",\n                        \"prefGrMemb\": \"include\",\n                        \"prio\": \"unspecified\"\n                      },\n                      \"children\": [\n                        {\n                          \"fvRsBd\": {\n                            \"attributes\": {\n                              \"dn\": \"\",\n                              \"tnFvBDName\": \"BD_{{IP}}_{{MASK}}\"\n                            }\n                          }\n                        },\n                        {\n                          \"fvRsDomAtt\": {\n                            \"attributes\": {\n                              \"classPref\": \"encap\",\n                              \"dn\": \"\",\n                              \"instrImedcy\": \"lazy\",\n                              \"primaryEncap\": \"unknown\",\n                              \"resImedcy\": \"lazy\",\n                              \"tDn\": \"uni/phys-PHY_DOM\"\n                            }\n                          }\n                        }\n                      ]\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "#3 - NAP4_EPG-Static Path Binding_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VPC-ATTACH-EPG1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"fvRsPathAtt\":{  \n      \"attributes\":{  \n         \"encap\":\"vlan-{{ENCAP}}\",\n         \"mode\":\"regular\",\n         \"instrImedcy\":\"immediate\",\n         \"tDn\":\"topology/pod-{{POD}}/protpaths-{{NODEID1}}-{{NODEID2}}/pathep-[{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-e{{INT3}}-{{NODEID2}}e{{INT2}}-e{{INT4}}]\",\n         \"status\":\"created,modified\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}\n"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-{{EPG}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"ap-{{AP}}",
+								"epg-{{EPG}}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "#4 - NAP4_VMM-VPC-Configuration_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Fabric AAEP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/attentp-HIPE1_DOM_AEP\",\n            \"name\": \"HIPE1_DOM_AEP\",\n            \"rn\": \"attentp-HIPE1_DOM_AEP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/phys-PHY_DOM\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            },\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-vdc02_ACI_CORP\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            },\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-vdc02_ACI_DMZ\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            },\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-vdc02_ACI_PCI\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraFuncP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/funcprof\",\n            \"status\": \"modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy_Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccBndlGrp\": {\n    \"attributes\": {\n      \"annotation\": \"\",\n      \"descr\": \"\",\n      \"dn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n      \"lagT\": \"node\",\n      \"name\": \"{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n      \"nameAlias\": \"\",\n      \"ownerKey\": \"\",\n      \"ownerTag\": \"\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tDn\": \"uni/infra/attentp-HIPE1_DOM_AEP\"\n          }\n        }\n      },\n      {\n        \"infraRsCdpIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnCdpIfPolName\": \"CDP_ON\"\n          }\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnFabricHIfPolName\": \"{{INTPOL}}\"\n          }\n        }\n      },\n      {\n        \"infraRsLacpPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnLacpLagPolName\": \"{{LACPPOL}}\"\n          }\n        }\n      },\n      {\n        \"infraRsLldpIfPol\": {\n          \"attributes\": {\n            \"annotation\": \"\",\n            \"tnLldpIfPolName\": \"LLDP_OFF\"\n          }\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interface Create and Attach to ifselector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT1}}\",\n            \"toPort\": \"{{INT2}}\",\n            \"descr\": \"{{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector",
+								"hports-{{IFNAME}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "#5 - NAP4_VMM-Configuration_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fabric_vlanPool",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-{{VMMPOOL}}-dynamic\",\n      \"name\": \"{{VMMPOOL}}\",\n      \"allocMode\": \"dynamic\",\n      \"rn\": \"vlanns-{{VMMPOOL}}-dynamic\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-{{VMMPOOL}}-dynamic/from-[vlan-{{VSTART}}]-to-[vlan-{{VSTOP}}]\",\n            \"from\": \"vlan-{{VSTART}}\",\n            \"to\": \"vlan-{{VSTOP}}\",\n            \"rn\": \"from-[vlan-{{VSTART}}]-to-[vlan-{{VSTOP}}]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-{{VMMPOOL}}-dynamic.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-{{VMMPOOL}}-dynamic.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create - VMM DOMAIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vmmDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}\",\n      \"name\": \"{{VMMDOM}}\",\n      \"rn\": \"dom-{{VMMDOM}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vmmCtrlrP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/ctrlr-{{VCENTER}}\",\n            \"name\": \"{{VCENTER}}\",\n            \"hostOrIp\": \"{{IP}}\",\n            \"rootContName\": \"{{DATACENTER}}\",\n            \"rn\": \"ctrlr-{{VCENTER}}\",\n            \"dvsVersion\": \"6.5\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"vmmRsAcc\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VMMPOOL}}]-dynamic\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmUsrAccP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n            \"name\": \"{{CREDS}}\",\n            \"usr\": \"{{VUSERNAME}}\",\n            \"pwd\": \"{{VPASSWORD}}\",\n            \"rn\": \"usracc-{{CREDS}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmVSwitchPolicyCont\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/vswitchpolcont\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/vmmp-VMware/dom-{{VMMDOM}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"vmmp-VMware",
+								"dom-{{VMMDOM}}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "#6 - NAP4_ADD_VMM_EPG_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD_VMM_to_EPG",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvRsDomAtt\": {\n    \"attributes\": {\n      \"resImedcy\": \"immediate\",\n      \"tDn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}\",\n      \"instrImedcy\": \"immediate\",\n      \"status\": \"modified,created\"\n    },\n    \"children\": [\n      {\n        \"vmmSecP\": {\n          \"attributes\": {\n            \"allowPromiscuous\": \"accept\",\n            \"forgedTransmits\": \"accept\",\n            \"macChanges\": \"accept\",\n            \"status\": \"modified,created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-{{EPG}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"ap-{{AP}}",
+								"epg-{{EPG}}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BACKUPs",
+			"item": [
+				{
+					"name": "create - VMM DOMAIN Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vmmDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}\",\n      \"name\": \"{{VMMDOM}}\",\n      \"rn\": \"dom-{{VMMDOM}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vmmCtrlrP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/ctrlr-{{VCENTER}}\",\n            \"name\": \"{{VCENTER}}\",\n            \"hostOrIp\": \"{{IP}}\",\n            \"rootContName\": \"{{DATACENTER}}\",\n            \"rn\": \"ctrlr-{{VCENTER}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"vmmRsAcc\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VMMPOOL}}]-dynamic\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmUsrAccP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n            \"name\": \"{{CREDS}}\",\n            \"usr\": \"{{VUSERNAME}}\",\n            \"pwd\": \"{{VPASSWORD}}\",\n            \"rn\": \"usracc-{{CREDS}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmVSwitchPolicyCont\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/vswitchpolcont\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"vmmRsVswitchOverrideLacpPol\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/infra/lacplagp-{{VMMDOM}}_lacpLagPol\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/vmmp-VMware/dom-{{VMMDOM}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"vmmp-VMware",
+								"dom-{{VMMDOM}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

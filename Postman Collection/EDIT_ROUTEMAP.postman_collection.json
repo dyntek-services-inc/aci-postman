@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "1970cd1f-3535-4d80-9d08-b2015c333462",
+		"name": "EDIT_ROUTEMAP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Match Rule",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rtctrlSubjP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}\",\n      \"name\": \"{{SUBNET}}_{{MASK}}\",\n      \"rn\": \"subj-{{SUBNET}}_{{MASK}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"rtctrlMatchRtDest\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}/dest-[{{SUBNET}}/{{MASK}}]\",\n            \"ip\": \"{{SUBNET}}/{{MASK}}\",\n            \"rn\": \"dest-[{{SUBNET}}/{{MASK}}]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"subj-{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Route Map",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rtctrlCtxP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT}}/prof-default-export/ctx-{{SUBNET}}_{{MASK}}\",\n      \"name\": \"{{SUBNET}}_{{MASK}}\",\n      \"rn\": \"ctx-{{SUBNET}}_{{MASK}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"rtctrlRsCtxPToSubjP\": {\n          \"attributes\": {\n            \"tnRtctrlSubjPName\": \"{{SUBNET}}_{{MASK}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT}}/prof-default-export/ctx-{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"out-{{L3OUT}}",
+						"prof-default-export",
+						"ctx-{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "c02a9eba-757d-46c9-a06a-a62dd806593f",
+		"name": "IF_SELECTOR_&_STATIC_PATH_BINDING_L2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login JSON",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policy_Group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n      \"infraAccPortGrp\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/infra/funcprof/accportgrp-{{SERVERNAME}}-{{NODEID}}e{{INT}}\",\n          \"name\": \"{{SERVERNAME}}-{{NODEID}}e{{INT}}\",\n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\" \n        },\n        \"children\": [\n          {\n            \"infraRsAttEntP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tDn\": \"uni/infra/attentp-{{AEP}}\"\n              }\n            }\n          },\n          {\n            \"infraRsCdpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnCdpIfPolName\": \"CDP_OFF\"\n              }\n            }\n          },\n          {\n            \"infraRsHIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFabricHIfPolName\": \"{{INTPOL}}\"\n              }\n            }\n          },\n          {\n            \"infraRsLldpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnLldpIfPolName\": \"LLDP_ON\"\n              }\n            }\n          }\n        ]\n      }\n    }"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accportgrp-{{SERVERNAME}}-{{NODEID}}e{{INT}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"funcprof",
+						"accportgrp-{{SERVERNAME}}-{{NODEID}}e{{INT}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Interface Create and Attach to ifselector",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT}}\",\n            \"toPort\": \"{{INT}}\",\n            \"descr\": \"{{INT_DESCRIPTION}} {{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accportgrp-{{SERVERNAME}}-{{NODEID}}e{{INT}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"accportprof-L{{NODEID}}_ifselector",
+						"hports-{{IFNAME}}-typ-range.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Static Path Binding",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvRsPathAtt\": {\n    \"attributes\": {\n      \"encap\": \"vlan-{{ENCAP}}\",\n      \"mode\": \"native\",\n      \"tDn\": \"topology/pod-{{POD}}/paths-{{NODEID}}/pathep-[eth1/{{INT}}]\",\n      \"instrImedcy\": \"immediate\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-V{{ENCAP}}_{{NAME}}_L2Only.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{AP}}",
+						"epg-V{{ENCAP}}_{{NAME}}_L2Only.json"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

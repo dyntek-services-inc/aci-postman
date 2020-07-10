@@ -1,0 +1,431 @@
+{
+	"info": {
+		"_postman_id": "9118167b-7493-400b-b5d7-f5511e29ab28",
+		"name": "FULL_L3OUT_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "L3Out",
+			"item": [
+				{
+					"name": "Create 100G Interface Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fabricHIfPol\":{\"attributes\":{\"dn\":\"uni/infra/hintfpol-100G-intpolicy\",\"name\":\"100G-intpolicy\",\"speed\":\"100G\",\"rn\":\"hintfpol-100G-intpolicy\",\"status\":\"created\"},\"children\":[]}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create VRF- vrf_corp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvCtx\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/ctx-vrf_corp\",\n      \"name\": \"vrf_corp\",\n      \"rn\": \"ctx-vrf_corp\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ctx-vrf_corp.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ctx-vrf_corp.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VRF Enable PIM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"pimCtxP\":{\"attributes\":{\"dn\":\"uni/tn-common/ctx-vrf_corp/pimctxp\",\"status\":\"created,modified\"},\"children\":[]}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}api/node/mo/uni/tn-common/ctx-vrf_corp/pimctxp.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ctx-vrf_corp",
+								"pimctxp.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VRF Enable Preferred Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"vzAny\":{\"attributes\":{\"dn\":\"uni/tn-common/ctx-vrf_corp/any\",\"prefGrMemb\":\"enabled\"},\"children\":[]}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ctx-vrf_corp/any.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ctx-vrf_corp",
+								"any.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OSPF_Policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ospfIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/ospfIfPol-corp_l3out\",\n      \"ctrl\": \"advert-subnet,bfd,mtu-ignore\",\n      \"helloIntvl\": \"5\",\n      \"deadIntvl\": \"15\",\n      \"nwT\": \"p2p\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ospfIfPol-corp_l3out.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ospfIfPol-corp_l3out.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-PORT Group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccPortGrp\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/funcprof/accportgrp-CORP_L3OUT_PolGrp\",\n      \"name\": \"CORP_L3OUT_PolGrp\",\n      \"rn\": \"accportgrp-CORP_L3OUT_PolGrp\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/attentp-L3OUT_DOM_AEP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"tnFabricHIfPolName\": \"100G-intpolicy\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsCdpIfPol\": {\n          \"attributes\": {\n            \"tnCdpIfPolName\": \"CDP_OFF\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsMcpIfPol\": {\n          \"attributes\": {\n            \"tnMcpIfPolName\": \"default\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsLldpIfPol\": {\n          \"attributes\": {\n            \"tnLldpIfPolName\": \"LLDP_ON\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}\n"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accportgrp-CORP_L3OUT_PolGrp.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accportgrp-CORP_L3OUT_PolGrp.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-IFSelector - need L3OUT-IFSelector csv",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"infraHPortS\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/accportprof-{{IFSELECTOR}}/hports-{{PORTNAME}}-typ-range\",\r\n      \"name\": \"{{PORTNAME}}\",\r\n      \"descr\": \"{{NODENAME-PORT}}\",\r\n      \"rn\": \"hports-{{PORTNAME}}-typ-range\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"infraPortBlk\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/infra/accportprof-{{IFSELECTOR}}/hports-{{PORTNAME}}-typ-range/portblk-block2\",\r\n            \"fromPort\": \"{{PORT}}\",\r\n            \"toPort\": \"{{PORT}}\",\r\n            \"descr\": \"{{DESCRIPTION}}\",\r\n            \"name\": \"block2\",\r\n            \"rn\": \"portblk-block2\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"infraRsAccBaseGrp\": {\r\n          \"attributes\": {\r\n            \"tDn\": \"uni/infra/funcprof/accportgrp-{{NODENAME-PORT}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFSELECTOR}}/hports-{{PORTNAME}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFSELECTOR}}",
+								"hports-{{PORTNAME}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable PIM NAP4 L3OUT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pimExtP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/out-NAP4_CORP_L3OUT/pimextp\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/out-NAP4_CORP_L3OUT/pimextp.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"out-NAP4_CORP_L3OUT",
+								"pimextp.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable PIM NAP7 L3OUT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pimExtP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/out-NAP7_CORP_L3OUT/pimextp\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/out-NAP7_CORP_L3OUT/pimextp.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"out-NAP7_CORP_L3OUT",
+								"pimextp.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rollback",
+			"item": [
+				{
+					"name": "Blacklist Interfaces",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fabricRsOosPath\": {\n    \"attributes\": {\n      \"tDn\": \"topology/pod-1/paths-{{LEAF}}pathep-[eth1/{{INT}}]\",\n      \"lc\": \"blacklist\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/fabric/outofsvc.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"fabric",
+								"outofsvc.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MGM_Once",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-Creation - need L3OUT csv",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extOut\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/out-{{L3OUT}}\",\n      \"name\": \"{{L3OUT}}\",\n      \"rn\": \"out-{{L3OUT}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"l3extInstP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/out-{{L3OUT}}/instP-{{L3OUT-EPG}}\",\n            \"name\": \"{{L3OUT-EPG}}\",\n            \"rn\": \"instP-{{L3OUT-EPG}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extSubnet\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-common/out-{{L3OUT}}/instP-{{L3OUT-EPG}}/extsubnet-[0.0.0.0/0]\",\n                  \"ip\": \"0.0.0.0/0\",\n                  \"aggregate\": \"\",\n                  \"rn\": \"extsubnet-[0.0.0.0/0]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"l3extLNodeP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES\",\n            \"name\": \"BL_NODES\",\n            \"rn\": \"lnodep-BL_NODES\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extLIfP\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES/lifp-NODES_IntProf\",\n                  \"name\": \"NODES_IntProf\",\n                  \"rn\": \"lifp-NODES_IntProf\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"bfdIfP\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES/lifp-NODES_IntProf/bfdIfP\",\n                        \"rn\": \"bfdIfP\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": [\n                        {\n                          \"bfdRsIfPol\": {\n                            \"attributes\": {\n                              \"tnBfdIfPolName\": \"default\",\n                              \"status\": \"created,modified\"\n                            },\n                            \"children\": []\n                          }\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"ospfIfP\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES/lifp-NODES_IntProf/ospfIfP\",\n                        \"authType\": \"md5\",\n                        \"authKey\": \"ospfword\",\n                        \"rn\": \"ospfIfP\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": [\n                        {\n                          \"ospfRsIfPol\": {\n                            \"attributes\": {\n                              \"tnOspfIfPolName\": \"corp_l3out\",\n                              \"status\": \"created,modified\"\n                            },\n                            \"children\": []\n                          }\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"l3extRsPathL3OutAtt\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES/lifp-NODES_IntProf/rspathL3OutAtt-[topology/pod-{{POD}}/paths-{{NODE}}/pathep-[eth1/{{PORT}}]]\",\n                        \"mac\": \"00:22:BD:F8:19:FF\",\n                        \"ifInstT\": \"l3-port\",\n                        \"addr\": \"{{IP}}\",\n                        \"mtu\": \"9000\",\n                        \"tDn\": \"topology/pod-{{POD}}/paths-{{NODE}}/pathep-[eth1/{{PORT}}]\",\n                        \"rn\": \"rspathL3OutAtt-[topology/pod-{{POD}}/paths-{{NODE}}/pathep-[eth1/{{PORT}}]]\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            },\n            {\n              \"l3extRsNodeL3OutAtt\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-common/out-{{L3OUT}}/lnodep-BL_NODES/rsnodeL3OutAtt-[topology/pod-{{POD}}/node-{{NODE}}]\",\n                  \"tDn\": \"topology/pod-{{POD}}/node-{{NODE}}\",\n                  \"rtrId\": \"{{LO0}}\",\n                  \"rn\": \"rsnodeL3OutAtt-[topology/pod-{{POD}}/node-{{NODE}}]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"l3extInfraNodeP\": {\n                      \"attributes\": {\n                        \"fabricExtCtrlPeering\": \"false\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"ospfExtP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/out-{{L3OUT}}/ospfExtP\",\n            \"areaId\": \"0\",\n            \"rn\": \"ospfExtP\",\n            \"status\": \"created,modified\",\n            \"areaType\": \"regular\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsEctx\": {\n          \"attributes\": {\n            \"tnFvCtxName\": \"vrf_corp\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsL3DomAtt\": {\n          \"attributes\": {\n            \"tDn\": \"uni/l3dom-L3OUT_DOM\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/out-{{L3OUT}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"out-{{L3OUT}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract and Subject -need L3OUT csv",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vzBrCP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/brc-{{L3OUT}}_Con\",\n      \"name\": \"{{L3OUT}}_Con\",\n      \"rn\": \"brc-{{L3OUT}}_Con\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"vzSubj\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/brc-{{L3OUT}}_Con/subj-{{L3OUT}}_Subj\",\n            \"name\": \"{{L3OUT}}_Subj\",\n            \"rn\": \"subj-{{L3OUT}}_Subj\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"vzRsSubjFiltAtt\": {\n                \"attributes\": {\n                  \"status\": \"created,modified\",\n                  \"tnVzFilterName\": \"default\",\n                  \"directives\": \"none\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Provide Contract to L3OUT - need L3OUT csv",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvRsProv\": {\n    \"attributes\": {\n      \"tnVzBrCPName\": \"{{L3OUT}}_Con\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/out-{{L3OUT}}/instP-{{L3OUT-EPG}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"out-{{L3OUT}}",
+								"instP-{{L3OUT-EPG}}.json"
+							]
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

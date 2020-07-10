@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "ff79c600-9c57-418f-b4e2-7ab01540dc70",
+		"name": "IFSELECTOR_for_BORDER_LEAF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IfSelector_PolicyGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-BL{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-BL{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT}}\",\n            \"toPort\": \"{{INT}}\",\n            \"descr\": \"To SPAN Data Broker\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accportgrp-NDB-SPAN-DESTINATION-100\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-BL{{NODEID}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"accportprof-BL{{NODEID}}_ifselector",
+						"hports-{{IFNAME}}-typ-range.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "52623837-2d4a-4899-9a6c-e0e24e56967c",
+		"name": "VLANPOOL_AEP_DOMAIN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fabric_vlanpool_ADCLB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-ADCLB_DOM_POOL-static\",\n      \"name\": \"ADCLB_DOM_POOL\",\n      \"allocMode\": \"static\",\n      \"rn\": \"vlanns-ADCLB_DOM_POOL-static\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-ADCLB_DOM_POOL-static/from-[vlan-63]-to-[vlan-175]\",\n            \"from\": \"vlan-63\",\n            \"to\": \"vlan-175\",\n            \"rn\": \"from-[vlan-63]-to-[vlan-175]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-ADCLB_DOM_POOL-static.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"vlanns-ADCLB_DOM_POOL-static.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fabric_vlanPool_NAP4A10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-NAP4A10_DOM_POOL-static\",\n      \"name\": \"NAP4A10_DOM_POOL\",\n      \"allocMode\": \"static\",\n      \"rn\": \"vlanns-NAP4A10_DOM_POOL-static\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-NAP4A10_DOM_POOL-static/from-[vlan-63]-to-[vlan-75]\",\n            \"from\": \"vlan-63\",\n            \"to\": \"vlan-75\",\n            \"rn\": \"from-[vlan-63]-to-[vlan-75]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-NAP4A10_DOM_POOL-static.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"vlanns-NAP4A10_DOM_POOL-static.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Fabric AAEP_ADCLB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/attentp-ADCLB_DOM_AEP\",\n            \"name\": \"ADCLB_DOM_AEP\",\n            \"rn\": \"attentp-ADCLB_DOM_AEP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/phys-ADCLB_DOM\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraFuncP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/funcprof\",\n            \"status\": \"modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Fabric AAEP_NAP4A10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/attentp-NAP4A10_DOM_AEP\",\n            \"name\": \"NAP4A10_DOM_AEP\",\n            \"rn\": \"attentp-NAP4A10_DOM_AEP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/phys-NAP4A10_DOM\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraFuncP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/funcprof\",\n            \"status\": \"modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fabric-Physical-Domain_ADCLB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"physDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/phys-ADCLB_DOM\",\n      \"name\": \"ADCLB_DOM\",\n      \"rn\": \"phys-ADCLB_DOM\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-ADCLB_DOM_POOL-static\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/phys-ADCLB_DOM.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"phys-ADCLB_DOM.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fabric-Physical-Domain_NAP4A10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"physDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/phys-NAP4A10_DOM\",\n      \"name\": \"NAP4A10_DOM\",\n      \"rn\": \"phys-NAP4A10_DOM\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-NAP4A10_DOM_POOL-static\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/phys-NAP4A10_DOM.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"phys-NAP4A10_DOM.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

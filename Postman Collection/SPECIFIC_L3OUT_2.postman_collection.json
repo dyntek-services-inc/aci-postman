@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "5dc977fd-f334-4e70-81d2-462d369890b3",
+		"name": "SPECIFIC_L3OUT_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Global Policies",
+			"item": [
+				{
+					"name": "Fabric_vlanPool",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-{{POOL}}-static\",\n      \"name\": \"{{POOL}}\",\n      \"allocMode\": \"static\",\n      \"rn\": \"vlanns-{{POOL}}-static\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-{{POOL}}-static/from-{{VLAN_START}}-to-{{VLAN_END}}\",\n            \"from\": \"{{VLAN_START}}\",\n            \"to\": \"{{VLAN_END}}\",\n            \"rn\": \"from-{{VLAN_START}}-to-{{VLAN_END}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-{{POOL}}-static.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-{{POOL}}-static.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fabric-Physical-Domain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/l3dom-{{DOMAIN}}\",\n      \"name\": \"{{DOMAIN}}\",\n      \"rn\": \"l3dom-{{DOMAIN}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-{{POOL}}-static\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/l3dom-{{DOMAIN}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"l3dom-{{DOMAIN}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Fabric AAEP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/attentp-{{AEP}}\",\n            \"name\": \"{{AEP}}\",\n            \"rn\": \"attentp-{{AEP}}\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/l3dom-{{DOMAIN}}\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraFuncP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/funcprof\",\n            \"status\": \"modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-PolicyGroup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n      \"infraAccBndlGrp\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"lagT\": \"node\",\n          \"name\": \"{{SERVERNAME}}-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"nameAlias\": \"\",\n          \"ownerKey\": \"\",\n          \"ownerTag\": \"\"\n        },\n        \"children\": [\n          {\n            \"infraRsAttEntP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tDn\": \"uni/infra/attentp-{{AEP}}\"\n              }\n            }\n          },\n          {\n            \"infraRsCdpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnCdpIfPolName\": \"CDP_OFF\"\n              }\n            }\n          },\n          {\n            \"infraRsHIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFabricHIfPolName\": \"{{INTPOL}}\"\n              }\n            }\n          },\n          {\n            \"infraRsLacpPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnLacpLagPolName\": \"{{LACPPOL}}\"\n              }\n            }\n          },\n          {\n            \"infraRsLldpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnLldpIfPolName\": \"LLDP_ON\"\n              }\n            }\n          }\n        ]\n      }\n    }"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{SERVERNAME}}-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accbundle-{{SERVERNAME}}-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-IFSelector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{NODEID1}}-{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{NODEID1}}-{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT1}}\",\n            \"toPort\": \"{{INT2}}\",\n            \"descr\": \"{{INT_DESCRIPTION}} {{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{NODEID1}}-{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{NODEID1}}-{{NODEID2}}_ifselector",
+								"hports-{{IFNAME}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "L3Out BGP",
+			"item": [
+				{
+					"name": "Create VRF",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvCtx\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/ctx-{{VRF}}\",\n      \"name\": \"{{VRF}}\",\n      \"rn\": \"ctx-{{VRF}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ctx-{{VRF}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"ctx-{{VRF}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contract and Subject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vzBrCP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/brc-{{L3OUT}}_Con\",\n      \"name\": \"{{L3OUT}}_Con\",\n      \"rn\": \"brc-{{L3OUT}}_Con\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"vzSubj\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/brc-{{L3OUT}}_Con/subj-{{L3OUT}}_Subj\",\n            \"name\": \"{{L3OUT}}_Subj\",\n            \"rn\": \"subj-{{L3OUT}}_Subj\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"vzRsSubjFiltAtt\": {\n                \"attributes\": {\n                  \"status\": \"created,modified\",\n                  \"tnVzFilterName\": \"default\",\n                  \"directives\": \"none\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "L3OUT-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"l3extOut\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT}}\",\n          \"enforceRtctrl\": \"export\",\n          \"name\": \"{{L3OUT}}\",\n          \"nameAlias\": \"\",\n          \"ownerKey\": \"\",\n          \"ownerTag\": \"\",\n          \"targetDscp\": \"unspecified\"\n        },\n        \"children\": [\n          {\n            \"rtctrlProfile\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"name\": \"default-export\",\n                \"nameAlias\": \"\",\n                \"ownerKey\": \"\",\n                \"ownerTag\": \"\",\n                \"type\": \"combinable\"\n              },\n              \"children\": [\n                {\n                  \"rtctrlCtxP\": {\n                    \"attributes\": {\n                      \"action\": \"permit\",\n                      \"annotation\": \"\",\n                      \"descr\": \"\",\n                      \"name\": \"{{SUBNET}}_24\",\n                      \"nameAlias\": \"\",\n                      \"order\": \"0\"\n                    },\n                    \"children\": [\n                      {\n                        \"rtctrlRsCtxPToSubjP\": {\n                          \"attributes\": {\n                            \"annotation\": \"\",\n                            \"tnRtctrlSubjPName\": \"{{SUBNET}}_24\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                }\n              ]\n            }\n          },\n          {\n            \"pimExtP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"enabledAf\": \"ipv4-mcast\",\n                \"name\": \"pim\",\n                \"nameAlias\": \"\"\n              }\n            }\n          },\n          {\n            \"l3extRsL3DomAtt\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tDn\": \"uni/l3dom-{{DOMAIN}}\"\n              }\n            }\n          },\n          {\n            \"l3extRsEctx\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFvCtxName\": \"{{VRF}}\"\n              }\n            }\n          },\n          {\n            \"l3extLNodeP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"configIssues\": \"\",\n                \"descr\": \"\",\n                \"name\": \"BL_NODES\",\n                \"nameAlias\": \"\",\n                \"ownerKey\": \"\",\n                \"ownerTag\": \"\",\n                \"tag\": \"yellow-green\",\n                \"targetDscp\": \"unspecified\"\n              },\n              \"children\": [\n                {\n                  \"l3extRsNodeL3OutAtt\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"configIssues\": \"\",\n                      \"rtrId\": \"{{LOA}}\",\n                      \"rtrIdLoopBack\": \"yes\",\n                      \"tDn\": \"topology/pod-1/node-800\"\n                    }\n                  }\n                },\n                {\n                  \"l3extRsNodeL3OutAtt\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"configIssues\": \"\",\n                      \"rtrId\": \"{{LOB}}\",\n                      \"rtrIdLoopBack\": \"yes\",\n                      \"tDn\": \"topology/pod-1/node-801\"\n                    }\n                  }\n                },\n                {\n                  \"l3extRsNodeL3OutAtt\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"configIssues\": \"\",\n                      \"rtrId\": \"{{LOC}}\",\n                      \"rtrIdLoopBack\": \"yes\",\n                      \"tDn\": \"topology/pod-2/node-500\"\n                    }\n                  }\n                },\n                {\n                  \"l3extRsNodeL3OutAtt\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"configIssues\": \"\",\n                      \"rtrId\": \"{{LOD}}\",\n                      \"rtrIdLoopBack\": \"yes\",\n                      \"tDn\": \"topology/pod-2/node-501\"\n                    }\n                  }\n                },\n                {\n                  \"l3extLIfP\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"descr\": \"\",\n                      \"name\": \"NODES_IntProf\",\n                      \"nameAlias\": \"\",\n                      \"ownerKey\": \"\",\n                      \"ownerTag\": \"\",\n                      \"tag\": \"yellow-green\"\n                    },\n                    \"children\": [\n                      {\n                        \"l3extRsPathL3OutAtt\": {\n                          \"attributes\": {\n                            \"addr\": \"0.0.0.0\",\n                            \"annotation\": \"\",\n                            \"autostate\": \"disabled\",\n                            \"descr\": \"\",\n                            \"encap\": \"vlan-{{VLAN}}\",\n                            \"encapScope\": \"local\",\n                            \"ifInstT\": \"ext-svi\",\n                            \"ipv6Dad\": \"enabled\",\n                            \"llAddr\": \"::\",\n                            \"mac\": \"00:22:BD:F8:19:FF\",\n                            \"mode\": \"regular\",\n                            \"mtu\": \"inherit\",\n                            \"tDn\": \"topology/pod-1/protpaths-800-801/pathep-[PALO-ALTO-NAP7-INT-{{NODE1}}e{{INT1}}-{{NODE2}}e{{INT2}}]\",\n                            \"targetDscp\": \"unspecified\"\n                          },\n                          \"children\": [\n                            {\n                              \"l3extMember\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{IPADDB}}/{{MASK}}\",\n                                  \"annotation\": \"\",\n                                  \"descr\": \"\",\n                                  \"ipv6Dad\": \"enabled\",\n                                  \"llAddr\": \"::\",\n                                  \"name\": \"\",\n                                  \"nameAlias\": \"\",\n                                  \"side\": \"B\"\n                                }\n                              }\n                            },\n                            {\n                              \"l3extMember\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{IPADDA}}/{{MASK}}\",\n                                  \"annotation\": \"\",\n                                  \"descr\": \"\",\n                                  \"ipv6Dad\": \"enabled\",\n                                  \"llAddr\": \"::\",\n                                  \"name\": \"\",\n                                  \"nameAlias\": \"\",\n                                  \"side\": \"A\"\n                                }\n                              }\n                            },\n                            {\n                              \"bgpPeerP\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{BGPPEER}}\",\n                                  \"allowedSelfAsCnt\": \"3\",\n                                  \"annotation\": \"\",\n                                  \"ctrl\": \"as-override\",\n                                  \"descr\": \"\",\n                                  \"name\": \"\",\n                                  \"password\": \"bgpword\",\n                                  \"nameAlias\": \"\",\n                                  \"peerCtrl\": \"bfd\",\n                                  \"privateASctrl\": \"\",\n                                  \"ttl\": \"1\",\n                                  \"weight\": \"0\"\n                                },\n                                \"children\": [\n                                  {\n                                    \"bgpRsPeerPfxPol\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"tnBgpPeerPfxPolName\": \"\"\n                                      }\n                                    }\n                                  },\n                                  {\n                                    \"bgpLocalAsnP\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"asnPropagate\": \"replace-as\",\n                                        \"descr\": \"\",\n                                        \"localAsn\": \"{{LOCALAS}}\",\n                                        \"name\": \"\",\n                                        \"nameAlias\": \"\"\n                                      }\n                                    }\n                                  },\n                                  {\n                                    \"bgpAsP\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"asn\": \"{{PEERAS}}\",\n                                        \"descr\": \"\",\n                                        \"name\": \"\",\n                                        \"nameAlias\": \"\"\n                                      }\n                                    }\n                                  }\n                                ]\n                              }\n                            }\n                          ]\n                        }\n                      },\n                      {\n                        \"l3extRsPathL3OutAtt\": {\n                          \"attributes\": {\n                            \"addr\": \"0.0.0.0\",\n                            \"annotation\": \"\",\n                            \"autostate\": \"disabled\",\n                            \"descr\": \"\",\n                            \"encap\": \"vlan-{{VLAN}}\",\n                            \"encapScope\": \"local\",\n                            \"ifInstT\": \"ext-svi\",\n                            \"ipv6Dad\": \"enabled\",\n                            \"llAddr\": \"::\",\n                            \"mac\": \"00:22:BD:F8:19:FF\",\n                            \"mode\": \"regular\",\n                            \"mtu\": \"inherit\",\n                            \"tDn\": \"topology/pod-2/protpaths-500-501/pathep-[PALO-ALTO-NAP4-INT-{{NODE3}}e{{INT3}}-{{NODE4}}e{{INT4}}]\",\n                            \"targetDscp\": \"unspecified\"\n                          },\n                          \"children\": [\n                            {\n                              \"l3extMember\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{IPADDC}}/{{MASK}}\",\n                                  \"annotation\": \"\",\n                                  \"descr\": \"\",\n                                  \"ipv6Dad\": \"enabled\",\n                                  \"llAddr\": \"::\",\n                                  \"name\": \"\",\n                                  \"nameAlias\": \"\",\n                                  \"side\": \"A\"\n                                }\n                              }\n                            },\n                            {\n                              \"l3extMember\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{IPADDD}}/{{MASK}}\",\n                                  \"annotation\": \"\",\n                                  \"descr\": \"\",\n                                  \"ipv6Dad\": \"enabled\",\n                                  \"llAddr\": \"::\",\n                                  \"name\": \"\",\n                                  \"nameAlias\": \"\",\n                                  \"side\": \"B\"\n                                }\n                              }\n                            },\n                            {\n                              \"bgpPeerP\": {\n                                \"attributes\": {\n                                  \"addr\": \"{{BGPPEER}}\",\n                                  \"allowedSelfAsCnt\": \"3\",\n                                  \"annotation\": \"\",\n                                  \"ctrl\": \"as-override\",\n                                  \"descr\": \"\",\n                                  \"name\": \"\",\n                                  \"password\": \"bgpword\",\n                                  \"nameAlias\": \"\",\n                                  \"peerCtrl\": \"bfd\",\n                                  \"privateASctrl\": \"\",\n                                  \"ttl\": \"1\",\n                                  \"weight\": \"0\"\n                                },\n                                \"children\": [\n                                  {\n                                    \"bgpRsPeerPfxPol\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"tnBgpPeerPfxPolName\": \"\"\n                                      }\n                                    }\n                                  },\n                                  {\n                                    \"bgpLocalAsnP\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"asnPropagate\": \"replace-as\",\n                                        \"descr\": \"\",\n                                        \"localAsn\": \"{{LOCALAS}}\",\n                                        \"name\": \"\",\n                                        \"nameAlias\": \"\"\n                                      }\n                                    }\n                                  },\n                                  {\n                                    \"bgpAsP\": {\n                                      \"attributes\": {\n                                        \"annotation\": \"\",\n                                        \"asn\": \"{{PEERAS}}\",\n                                        \"descr\": \"\",\n                                        \"name\": \"\",\n                                        \"nameAlias\": \"\"\n                                      }\n                                    }\n                                  }\n                                ]\n                              }\n                            }\n                          ]\n                        }\n                      },\n                      {\n                        \"l3extRsNdIfPol\": {\n                          \"attributes\": {\n                            \"annotation\": \"\",\n                            \"tnNdIfPolName\": \"\"\n                          }\n                        }\n                      },\n                      {\n                        \"l3extRsIngressQosDppPol\": {\n                          \"attributes\": {\n                            \"annotation\": \"\",\n                            \"tnQosDppPolName\": \"\"\n                          }\n                        }\n                      },\n                      {\n                        \"l3extRsEgressQosDppPol\": {\n                          \"attributes\": {\n                            \"annotation\": \"\",\n                            \"tnQosDppPolName\": \"\"\n                          }\n                        }\n                      },\n                      {\n                        \"bfdIfP\": {\n                          \"attributes\": {\n                            \"annotation\": \"\",\n                            \"descr\": \"\",\n                            \"keyId\": \"1\",\n                            \"name\": \"\",\n                            \"nameAlias\": \"\",\n                            \"type\": \"none\"\n                          },\n                          \"children\": [\n                            {\n                              \"bfdRsIfPol\": {\n                                \"attributes\": {\n                                  \"annotation\": \"\",\n                                  \"tnBfdIfPolName\": \"default\"\n                                }\n                              }\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                }\n              ]\n            }\n          },\n          {\n            \"l3extInstP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"exceptionTag\": \"\",\n                \"floodOnEncap\": \"disabled\",\n                \"matchT\": \"AtleastOne\",\n                \"name\": \"{{L3OUT}}_EPG\",\n                \"nameAlias\": \"\",\n                \"prefGrMemb\": \"exclude\",\n                \"prio\": \"unspecified\",\n                \"targetDscp\": \"unspecified\"\n              },\n              \"children\": [\n                {\n                  \"fvRsProv\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"matchT\": \"AtleastOne\",\n                      \"prio\": \"unspecified\",\n                      \"tnVzBrCPName\": \"{{L3OUT}}_Con\"\n                    }\n                  }\n                },\n                {\n                  \"l3extSubnet\": {\n                    \"attributes\": {\n                      \"aggregate\": \"\",\n                      \"annotation\": \"\",\n                      \"descr\": \"\",\n                      \"ip\": \"0.0.0.0/0\",\n                      \"name\": \"\",\n                      \"nameAlias\": \"\",\n                      \"scope\": \"import-security\"\n                    }\n                  }\n                },\n                {\n                  \"fvRsCustQosPol\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"tnQosCustomPolName\": \"\"\n                    }\n                  }\n                },\n                {\n                  \"fvRsCons\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"prio\": \"unspecified\",\n                      \"tnVzBrCPName\": \"NAP7_CORP_L3OUT_Con\"\n                    }\n                  }\n                },\n                {\n                  \"fvRsCons\": {\n                    \"attributes\": {\n                      \"annotation\": \"\",\n                      \"prio\": \"unspecified\",\n                      \"tnVzBrCPName\": \"NAP4_CORP_L3OUT_Con\"\n                    }\n                  }\n                }\n              ]\n            }\n          },\n          {\n            \"bgpExtP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"descr\": \"\",\n                \"nameAlias\": \"\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"out-{{L3OUT}}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

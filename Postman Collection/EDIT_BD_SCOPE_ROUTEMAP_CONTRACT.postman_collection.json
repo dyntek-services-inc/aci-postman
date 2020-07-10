@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "1243b717-fcb1-4780-9b6e-217a32d344e1",
+		"name": "EDIT_BD_SCOPE_ROUTEMAP_CONTRACT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BD Scope and Routing ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvBD\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/BD-BD_{{SUBNET}}_{{MASK}}\",\n      \"unicastRoute\":\"{{ROUTE}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvSubnet\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/BD-BD_{{SUBNET}}_{{MASK}}/subnet-[{{IP}}/{{MASK}}]\",\n            \"scope\": \"{{SCOPE}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/BD-BD_{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"BD-BD_{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Match Rule",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rtctrlSubjP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}\",\n      \"name\": \"{{SUBNET}}_{{MASK}}\",\n      \"rn\": \"subj-{{SUBNET}}_{{MASK}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"rtctrlMatchRtDest\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}/dest-[{{SUBNET}}/{{MASK}}]\",\n            \"ip\": \"{{SUBNET}}/{{MASK}}\",\n            \"rn\": \"dest-[{{SUBNET}}/{{MASK}}]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/subj-{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"subj-{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Route Map",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rtctrlCtxP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT}}/prof-default-export/ctx-{{SUBNET}}_{{MASK}}\",\n      \"name\": \"{{SUBNET}}_{{MASK}}\",\n      \"rn\": \"ctx-{{SUBNET}}_{{MASK}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"rtctrlRsCtxPToSubjP\": {\n          \"attributes\": {\n            \"tnRtctrlSubjPName\": \"{{SUBNET}}_{{MASK}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT}}/prof-default-export/ctx-{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"out-{{L3OUT}}",
+						"prof-default-export",
+						"ctx-{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Contract to EPG",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"fvRsCons\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"dn\": \"uni/tn-{{TENANT}}/ap-{{AP}}/epg-dyn_{{SUBNET}}_{{MASK}}/rscons-{{L3OUT}}_{{AP}}_Con\",\n          \"prio\": \"unspecified\",\n          \"tnVzBrCPName\": \"{{L3OUT}}_{{AP}}_Con\"\n        }\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-dyn_{{SUBNET}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{AP}}",
+						"epg-dyn_{{SUBNET}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

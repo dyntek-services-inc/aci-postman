@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "6cf6626d-e9b2-4a21-96a2-e4611fb04c63",
+		"name": "POLICYGROUP_EPG_BD_STATICBINDING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login JSON",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BPDU_FILTER_ENABLED",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"stpIfPol\": {\n    \"attributes\": {\n      \"ctrl\": \"bpdu-filter\",\n      \"descr\": \"\",\n      \"dn\": \"uni/infra/ifPol-BPDU_FILTER_ENABLED\",\n      \"name\": \"BPDU_FILTER_ENABLED\",\n      \"nameAlias\": \"\",\n      \"ownerKey\": \"\",\n      \"ownerTag\": \"\"\n    }\n  }\n}\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policy_Group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n      \"infraAccBndlGrp\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"lagT\": \"node\",\n          \"name\": \"{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"nameAlias\": \"\",\n          \"ownerKey\": \"\",\n          \"ownerTag\": \"\"\n        },\n        \"children\": [\n            {\n                \"infraRsStpIfPol\": {\n                    \"attributes\": {\n                        \"annotation\": \"\",\n                        \"tnStpIfPolName\": \"BPDU_FILTER_ENABLED\"\n                    }\n                }\n            },\t\n          {\n            \"infraRsAttEntP\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tDn\": \"uni/infra/attentp-{{DOMAIN}}_AEP\"\n              }\n            }\n          },\n          {\n            \"infraRsCdpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnCdpIfPolName\": \"CDP_OFF\"\n              }\n            }\n          },\n          {\n            \"infraRsHIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnFabricHIfPolName\": \"{{INTPOL}}\"\n              }\n            }\n          },\n          {\n            \"infraRsLacpPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnLacpLagPolName\": \"{{LACPPOL}}\"\n              }\n            }\n          },\n          {\n            \"infraRsLldpIfPol\": {\n              \"attributes\": {\n                \"annotation\": \"\",\n                \"tnLldpIfPolName\": \"LLDP_ON\"\n              }\n            }\n          }\n        ]\n      }\n    }"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"funcprof",
+						"accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Interface Create and Attach to ifselector Leaf",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT1}}\",\n            \"toPort\": \"{{INT2}}\",\n            \"descr\": \"{{INT_DESCRIPTION}} {{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector",
+						"hports-{{IFNAME}}-typ-range.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VPC-ATTACH-EPG",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"fvRsPathAtt\":{  \n      \"attributes\":{  \n         \"encap\":\"vlan-{{ENCAP}}\",\n         \"mode\":\"regular\",\n         \"instrImedcy\":\"immediate\",\n         \"tDn\":\"topology/pod-{{POD}}/protpaths-{{NODEID1}}-{{NODEID2}}/pathep-[{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}]\",\n         \"status\":\"created,modified\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{AP}}",
+						"epg-{{EPG}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

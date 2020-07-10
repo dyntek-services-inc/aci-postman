@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "c3225907-b5f0-43af-8f29-f2e57e6b34d3",
+		"name": "VMM_VLAN_POOL_and_VMM_DOMAIN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NAP4_VMM-Configuration_v1.0",
+			"item": [
+				{
+					"name": "Basic login JSON Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fabric_vlanPool",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-{{VMMPOOL}}-dynamic\",\n      \"name\": \"{{VMMPOOL}}\",\n      \"allocMode\": \"dynamic\",\n      \"rn\": \"vlanns-{{VMMPOOL}}-dynamic\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-{{VMMPOOL}}-dynamic/from-[vlan-{{VSTART}}]-to-[vlan-{{VSTOP}}]\",\n            \"from\": \"vlan-{{VSTART}}\",\n            \"to\": \"vlan-{{VSTOP}}\",\n            \"rn\": \"from-[vlan-{{VSTART}}]-to-[vlan-{{VSTOP}}]\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-{{VMMPOOL}}-dynamic.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-{{VMMPOOL}}-dynamic.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create - VMM DOMAIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vmmDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}\",\n      \"name\": \"{{VMMDOM}}\",\n      \"rn\": \"dom-{{VMMDOM}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"vmmCtrlrP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/ctrlr-{{VCENTER}}\",\n            \"name\": \"{{VCENTER}}\",\n            \"hostOrIp\": \"{{IP}}\",\n            \"rootContName\": \"{{DATACENTER}}\",\n            \"rn\": \"ctrlr-{{VCENTER}}\",\n            \"dvsVersion\": \"6.5\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"vmmRsAcc\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VMMPOOL}}]-dynamic\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmUsrAccP\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/usracc-{{CREDS}}\",\n            \"name\": \"{{CREDS}}\",\n            \"usr\": \"{{VUSERNAME}}\",\n            \"pwd\": \"{{VPASSWORD}}\",\n            \"rn\": \"usracc-{{CREDS}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"vmmVSwitchPolicyCont\": {\n          \"attributes\": {\n            \"dn\": \"uni/vmmp-VMware/dom-{{VMMDOM}}/vswitchpolcont\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/vmmp-VMware/dom-{{VMMDOM}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"vmmp-VMware",
+								"dom-{{VMMDOM}}.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

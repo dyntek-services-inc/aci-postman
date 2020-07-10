@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "ea3a5802-4d09-4626-b293-a2756532e09e",
+		"name": "DELETE_VPC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login JSON",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policy_Group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n      \"infraAccBndlGrp\": {\n        \"attributes\": {\n          \"annotation\": \"\",\n          \"descr\": \"\",\n          \"dn\": \"uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"lagT\": \"node\",\n          \"name\": \"{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}\",\n          \"nameAlias\": \"\",\n\t\t  \"status\": \"deleted\"\n        },\n        \"children\": [\n        ]\n      }\n    }"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"funcprof",
+						"accbundle-{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Interface Create and Attach to ifselector",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range\",\n      \"name\": \"{{IFNAME}}\",\n      \"rn\": \"hports-{{IFNAME}}-typ-range\",\n      \"status\": \"deleted\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{INT1}}\",\n            \"toPort\": \"{{INT2}}\",\n            \"descr\": \"{{INT_DESCRIPTION}} {{SERVERNAME}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"deleted\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector/hports-{{IFNAME}}-typ-range.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"accportprof-L{{NODEID1}}-L{{NODEID2}}_ifselector",
+						"hports-{{IFNAME}}-typ-range.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VPC-ATTACH-EPG",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"fvRsPathAtt\":{  \n      \"attributes\":{  \n         \"encap\":\"vlan-{{ENCAP}}\",\n         \"mode\":\"regular\",\n         \"instrImedcy\":\"immediate\",\n         \"tDn\":\"topology/pod-{{POD}}/protpaths-{{NODEID1}}-{{NODEID2}}/pathep-[{{SERVERNAME}}-VPC-{{NODEID1}}e{{INT1}}-{{NODEID2}}e{{INT2}}]\",\n         \"status\":\"deleted\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{AP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{AP}}",
+						"epg-{{EPG}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

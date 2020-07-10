@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "d8f55cfa-2c1c-4361-b11f-dfbd00309700",
+		"name": "VPC_STATICBINDING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Static Path Binding",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"fvRsPathAtt\":{  \n      \"attributes\":{  \n         \"encap\":\"vlan-{{ENCAP}}\",\n         \"mode\":\"regular\",\n         \"instrImedcy\":\"immediate\",\n         \"tDn\":\"topology/pod-2/protpaths-412-413/pathep-[NAP4_TEMP_L2_NAP4-30-32-131-L412e37-L413e37]\",\n         \"status\":\"created,modified\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-DMZ/ap-DMZ/epg-V{{ENCAP}}_{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-DMZ",
+						"ap-DMZ",
+						"epg-V{{ENCAP}}_{{EPG}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

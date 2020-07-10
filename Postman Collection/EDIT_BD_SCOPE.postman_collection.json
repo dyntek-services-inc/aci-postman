@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "f96a229e-220c-44be-8dd7-6cecc87a0c6c",
+		"name": "EDIT_BD_SCOPE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Basic login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BD Scope and Routing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvBD\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/BD-BD_{{IP}}_{{MASK}}\",\n      \"unicastRoute\":\"{{ROUTE}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"fvSubnet\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/BD-BD_{{IP}}_{{MASK}}/subnet-[{{SUBNET}}/{{MASK}}]\",\n            \"scope\": \"{{SCOPE}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/BD-BD_{{IP}}_{{MASK}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"BD-BD_{{IP}}_{{MASK}}.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "4100bfe9-8d14-4b0c-b27e-db16ca20c9cb",
+		"name": "VPC_SW_PROF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SW_VPC_Int_Selector",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"infraRsAccPortP\": {\r\n    \"attributes\": {\r\n      \"tDn\": \"uni/infra/accportprof-{{VPCNAME}}_ifselector\",\r\n      \"status\": \"created,modified\"\r\n    }\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/nprof-{{VPCNAME}}_swprof.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"nprof-{{VPCNAME}}_swprof.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SW_VPC_Int_Prof",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fabricExplicitGEp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/fabric/protpol/expgep-{{VPCNAME}}\",\r\n      \"name\": \"{{VPCNAME}}\",\r\n      \"id\": \"{{NODEID1}}\",\r\n      \"rn\": \"expgep-{{VPCNAME}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [{\r\n      \"fabricNodePEp\": {\r\n        \"attributes\": {\r\n          \"dn\": \"uni/fabric/protpol/expgep-{{VPCNAME}}/nodepep-{{NODEID1}}\",\r\n          \"id\": \"{{NODEID1}}\",\r\n          \"status\": \"created\",\r\n          \"rn\": \"nodepep-{{NODEID1}}\"\r\n        },\r\n        \"children\": []\r\n      }\r\n    },\r\n    {\r\n      \"fabricNodePEp\": {\r\n        \"attributes\": {\r\n          \"dn\": \"uni/fabric/protpol/expgep-{{VPCNAME}}/nodepep-{{NODEID2}}\",\r\n          \"id\": \"{{NODEID2}}\",\r\n          \"status\": \"created\",\r\n          \"rn\": \"nodepep-{{NODEID2}}\"\r\n        },\r\n        \"children\": []\r\n      }\r\n    }]\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SW_VPC_Sw_Prof",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"infraNodeP\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/nprof-{{VPCNAME}}_swprof\",\r\n      \"name\": \"{{VPCNAME}}_swprof\",\r\n      \"rn\": \"nprof-{{VPCNAME}}_swprof\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": [{\r\n      \"infraLeafS\": {\r\n        \"attributes\": {\r\n          \"dn\": \"uni/infra/nprof-{{VPCNAME}}_swprof/leaves-{{VPCNAME}}-typ-range\",\r\n          \"type\": \"range\",\r\n          \"name\": \"{{VPCNAME}}\",\r\n          \"rn\": \"leaves-{{VPCNAME}}-typ-range\",\r\n          \"status\": \"created,modified\"\r\n        },\r\n        \"children\": [{\r\n          \"infraNodeBlk\": {\r\n            \"attributes\": {\r\n              \"dn\": \"uni/infra/nprof-{{VPCNAME}}_swprof/leaves-{{VPCNAME}}-typ-range/nodeblk-{{MD5-HASH}}\",\r\n              \"from_\": \"{{NODEID1}}\",\r\n              \"to_\": \"{{NODEID2}}\",\r\n              \"name\": \"{{MD5-HASH}}\",\r\n              \"rn\": \"nodeblk-{{MD5-HASH}}\",\r\n              \"status\": \"created,modified\"\r\n            },\r\n            \"children\": []\r\n          }\r\n        }]\r\n      }\r\n    }]\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/nprof-{{VPCNAME}}_swprof.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"nprof-{{VPCNAME}}_swprof.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

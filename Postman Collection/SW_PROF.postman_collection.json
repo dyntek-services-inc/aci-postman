@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "06dfc894-0f55-46a6-a803-49f84ce7325e",
+		"name": "SW_PROF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SW_Int_Prof",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"infraAccPortP\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/accportprof-{{NODENAME}}_ifselector\",\r\n      \"name\": \"{{NODENAME}}_ifselector\",\r\n      \"rn\": \"accportprof-{{NODENAME}}_ifselector\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{NODENAME}}_ifselector.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"accportprof-{{NODENAME}}_ifselector.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SW_Prof",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"infraNodeP\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/nprof-{{NODENAME}}_swprof\",\r\n      \"name\": \"{{NODENAME}}_swprof\",\r\n      \"rn\": \"nprof-{{NODENAME}}_swprof\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": [{\r\n      \"infraLeafS\": {\r\n        \"attributes\": {\r\n          \"dn\": \"uni/infra/nprof-{{NODENAME}}_swprof/leaves-{{NODENAME}}-typ-range\",\r\n          \"type\": \"range\",\r\n          \"name\": \"{{NODENAME}}\",\r\n          \"rn\": \"leaves-{{NODENAME}}-typ-range\",\r\n          \"status\": \"created,modified\"\r\n        },\r\n        \"children\": [{\r\n          \"infraNodeBlk\": {\r\n            \"attributes\": {\r\n              \"dn\": \"uni/infra/nprof-{{NODENAME}}_swprof/leaves-{{NODENAME}}-typ-range/nodeblk-{{MD5-HASH}}\",\r\n              \"from_\": \"{{NODEID}}\",\r\n              \"to_\": \"{{NODEID}}\",\r\n              \"name\": \"{{MD5-HASH}}\",\r\n              \"rn\": \"nodeblk-{{MD5-HASH}}\",\r\n              \"status\": \"created,modified\"\r\n            },\r\n            \"children\": []\r\n          }\r\n        }]\r\n      }\r\n    }]\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/nprof-{{NODENAME}}_swprof.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"nprof-{{NODENAME}}_swprof.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SW_Associate_Prof",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"infraRsAccPortP\": {\r\n    \"attributes\": {\r\n      \"tDn\": \"uni/infra/accportprof-{{NODENAME}}_ifselector\",\r\n      \"status\": \"created,modified\"\r\n    }\r\n  }\r\n} \r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/nprof-{{NODENAME}}_swprof.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"nprof-{{NODENAME}}_swprof.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

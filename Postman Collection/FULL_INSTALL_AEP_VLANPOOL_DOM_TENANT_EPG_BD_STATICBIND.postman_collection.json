@@ -1,0 +1,383 @@
+{
+	"info": {
+		"_postman_id": "f230dae8-9ad5-4f8b-8de7-1bb101916047",
+		"name": "FULL_INSTALL_AEP_VLANPOOL_DOM_TENANT_EPG_BD_STATICBIND",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login - Do this first",
+			"item": [
+				{
+					"name": "Basic login JSON",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Global Policies",
+			"item": [
+				{
+					"name": "Fabric_vlanPool",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/vlanns-[PHY_DOM_POOL]-static\",\n      \"name\": \"PHY_DOM_POOL\",\n      \"allocMode\": \"static\",\n      \"rn\": \"vlanns-[PHY_DOM_POOL]-static\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/vlanns-[PHY_DOM_POOL]-static/from-[vlan-1]-to-[vlan-4094]\",\n            \"from\": \"vlan-1\",\n            \"to\": \"vlan-4094\",\n            \"rn\": \"from-[vlan-1]-to-[vlan-4094]\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-[PHY_DOM_POOL]-static.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-[PHY_DOM_POOL]-static.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Fabric AAEP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/attentp-PHY_DOM_AEP\",\n            \"name\": \"PHY_DOM_AEP\",\n            \"rn\": \"attentp-PHY_DOM_AEP\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/phys-PHY_DOM\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"infraFuncP\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/funcprof\",\n            \"status\": \"modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fabric-Physical-Domain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"physDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/phys-PHY_DOM\",\n      \"name\": \"PHY_DOM\",\n      \"rn\": \"phys-PHY_DOM\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[PHY_DOM_POOL]-static\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/phys-PHY_DOM.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"phys-PHY_DOM.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Access Policies",
+			"item": [
+				{
+					"name": "EFNODE ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccPortGrp\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/funcprof/accportgrp-EFNODE03\",\n      \"name\": \"EFNODE03\",\n      \"rn\": \"accportgrp-EFNODE03\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/attentp-PHY_DOM_AEP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"tnFabricHIfPolName\": \"1G-intpolicy\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accportgrp-EFNODE03.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accportgrp-EFNODE03.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interface",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-L706_ifselector/hports-E1_1-typ-range\",\n      \"name\": \"E1_1\",\n      \"rn\": \"hports-E1_1-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-L706_ifselector/hports-E1_1-typ-range/portblk-block2\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accportgrp-EFNODE03\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-L706_ifselector/hports-E1_1-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-L706_ifselector",
+								"hports-E1_1-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenant",
+			"item": [
+				{
+					"name": "APP-PROFILE-BUILD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"fvAp\":{  \n      \"attributes\":{  \n         \"dn\":\"uni/tn-common/ap-CORP\",\n         \"name\":\"CORP\",\n         \"rn\":\"ap-CORP\",\n         \"status\":\"created,modified\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ap-CORP.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ap-CORP.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Bridge Domain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-common/BD-BD_10.215.101.0_24\",\r\n      \"mac\": \"00:22:BD:F8:19:FF\",\r\n      \"name\": \"BD_10.215.101.0_24\",\r\n      \"rn\": \"BD-BD_10.215.101.0_24\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvSubnet\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/tn-common/BD-BD_10.215.101.0_24/subnet-[10.215.101.1/24]\",\r\n            \"ip\": \"10.215.101.1/24\",\r\n            \"rn\": \"subnet-[10.215.101.1/24]\",\r\n            \"scope\": \"public\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"vrf_corp\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						},
+						"description": "Requires Basic login.\nRequires varibales in environment.\nChange IP addresses in line 5"
+					},
+					"response": []
+				},
+				{
+					"name": "Create EPG",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"polUni\": {\n\t\t\"attributes\": {\n\t\t\t\"dn\": \"uni\"\n\t\t},\n\t\t\"children\": [{\n\t\t\t\"fvTenant\": {\n\t\t\t\t\"attributes\": {\n\t\t\t\t\t\"descr\": \"\",\n\t\t\t\t\t\"dn\": \"uni/tn-common\",\n\t\t\t\t\t\"name\": \"common\",\n\t\t\t\t\t\"ownerKey\": \"\",\n\t\t\t\t\t\"ownerTag\": \"\"\n\t\t\t\t},\n\t\t\t\t\"children\": [{\n\t\t\t\t\t\"fvAp\": {\n\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\"descr\": \"\",\n\t\t\t\t\t\t\t\"dn\": \"\",\n\t\t\t\t\t\t\t\"name\": \"CORP\",\n\t\t\t\t\t\t\t\"ownerKey\": \"\",\n\t\t\t\t\t\t\t\"ownerTag\": \"\",\n\t\t\t\t\t\t\t\"prio\": \"unspecified\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"children\": [{\n\t\t\t\t\t\t\t\"fvAEPg\": {\n\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\"descr\": \"\",\n\t\t\t\t\t\t\t\t\t\"dn\": \"\",\n\t\t\t\t\t\t\t\t\t\"isAttrBasedEPg\": \"no\",\n\t\t\t\t\t\t\t\t\t\"matchT\": \"AtleastOne\",\n\t\t\t\t\t\t\t\t\t\"name\": \"V10_10.215.101.0_24\",\n\t\t\t\t\t\t\t\t\t\"pcEnfPref\": \"unenforced\",\n\t\t\t\t\t\t\t\t\t\"prio\": \"unspecified\"\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\"children\": [{\n\t\t\t\t\t\t\t\t\t\"fvRsCons\": {\n\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\"dn\": \"\",\n\t\t\t\t\t\t\t\t\t\t\t\"prio\": \"unspecified\",\n\t\t\t\t\t\t\t\t\t\t\t\"tnVzBrCPName\": \"NAP7_CORP_L3OUT_Con\"\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"fvRsBd\": {\n\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\"dn\": \"\",\n\t\t\t\t\t\t\t\t\t\t\t\"tnFvBDName\": \"BD_10.215.101.0_24\"\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"fvRsDomAtt\": {\n\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\"classPref\": \"encap\",\n\t\t\t\t\t\t\t\t\t\t\t\"dn\": \"\",\n\t\t\t\t\t\t\t\t\t\t\t\"instrImedcy\": \"lazy\",\n\t\t\t\t\t\t\t\t\t\t\t\"primaryEncap\": \"unknown\",\n\t\t\t\t\t\t\t\t\t\t\t\"resImedcy\": \"lazy\",\n\t\t\t\t\t\t\t\t\t\t\t\"tDn\": \"uni/phys-PHY_DOM\"\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t]\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}]\n\t\t\t\t\t}\n\t\t\t\t}]\n\t\t\t}\n\t\t}]\n\t}\n}\n"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						},
+						"description": "\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Static Binding Single Port",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvRsPathAtt\": {\n    \"attributes\": {\n      \"encap\": \"vlan-10\",\n      \"mode\": \"native\",\n      \"tDn\": \"topology/pod-1/paths-706/pathep-[eth1/1]\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ap-CORP/epg-V10_10.215.101.0_24.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ap-CORP",
+								"epg-V10_10.215.101.0_24.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "L3OUT",
+			"item": [
+				{
+					"name": "Create Default Export Route Map",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rtctrlProfile\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/out-NAP7_CORP_L3OUT/prof-default-export\",\n      \"name\": \"default-export\",\n      \"type\": \"global\",\n      \"rn\": \"prof-default-export\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"rtctrlCtxP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/out-NAP7_CORP_L3OUT/prof-default-export/ctx-10.215.101.0_24\",\n            \"name\": \"10.215.101.0_24\",\n            \"rn\": \"ctx-10.215.101.0_24\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"rtctrlRsCtxPToSubjP\": {\n                \"attributes\": {\n                  \"tnRtctrlSubjPName\": \"10.215.101.0_24\",\n                  \"status\": \"created\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/out-NAP7_CORP_L3OUT/prof-default-export.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"out-NAP7_CORP_L3OUT",
+								"prof-default-export.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Match Rule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rtctrlSubjP\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/subj-10.215.101.0_24\",\n      \"name\": \"10.215.101.0_24\",\n      \"rn\": \"subj-10.215.101.0_24\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"rtctrlMatchRtDest\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/subj-10.215.101.0_24/dest-[10.215.101.0/24]\",\n            \"ip\": \"10.215.101.0/24\",\n            \"rn\": \"dest-[10.215.101.0/24]\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/node/mo/uni/tn-common/subj-10.215.101.0_24.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"subj-10.215.101.0_24.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

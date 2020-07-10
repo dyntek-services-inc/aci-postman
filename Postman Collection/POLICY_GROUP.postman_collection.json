@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "869190b9-f9a5-4f60-9420-eb63b235253c",
+		"name": "POLICY_GROUP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"aaaUser\": {\"attributes\": {\"name\": \"{{USERNAME}}\", \"pwd\": \"{{PASSWORD}}\"}}}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PolicyGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n  \"infraAccPortGrp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/funcprof/accportgrp-NDB-SPAN-DESTINATION-100\",\r\n      \"name\": \"NDB-SPAN-DESTINATION-100\",\r\n      \"rn\": \"accportgrp-NDB-SPAN-DESTINATION-100\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"infraRsAttEntP\": {\r\n          \"attributes\": {\r\n            \"tDn\": \"uni/infra/attentp-PHY_DOM_AEP\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"infraRsHIfPol\": {\r\n          \"attributes\": {\r\n            \"tnFabricHIfPolName\": \"100G-intpolicy\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"infraRsCdpIfPol\": {\r\n          \"attributes\": {\r\n            \"annotation\": \"\",\r\n            \"tnCdpIfPolName\": \"CDP_OFF\"\r\n          }\r\n        }\r\n      },\r\n      {\r\n        \"infraRsLldpIfPol\": {\r\n          \"attributes\": {\r\n            \"annotation\": \"\",\r\n            \"tnLldpIfPolName\": \"LLDP_ON\"\r\n          }\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accportgrp-NDB-SPAN-DESTINATION-100.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"infra",
+						"funcprof",
+						"accportgrp-NDB-SPAN-DESTINATION-100.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

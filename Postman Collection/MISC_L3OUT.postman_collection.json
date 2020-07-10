@@ -1,0 +1,711 @@
+{
+	"info": {
+		"_postman_id": "ed7ef8d6-e6da-4ae6-a8e9-85a9ff98d0ba",
+		"name": "MISC_L3OUT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Run me first",
+			"item": [
+				{
+					"name": "0_Authentication",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"aaaUser\":{\r\n    \"attributes\":{\r\n      \"name\": \"{{USERNAME}}\",\r\n      \"pwd\": \"{{PASSWORD}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "L3Out Core",
+			"item": [
+				{
+					"name": "1_VLAN-Pool-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"allocMode\": \"static\",\n      \"descr\": \"\",\n      \"dn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-static\",\n      \"name\": \"{{VLANPOOL}}\",\n      \"ownerKey\": \"\",\n      \"ownerTag\": \"\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"allocMode\": \"inherit\",\n            \"descr\": \"\",\n            \"from\": \"vlan-3961\",\n            \"name\": \"\",\n            \"to\": \"vlan-3966\"\n          }\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-[{{VLANPOOL}}]-static.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-[{{VLANPOOL}}]-static.json"
+							]
+						},
+						"description": "VLAN Pool Add"
+					},
+					"response": []
+				},
+				{
+					"name": "2_AEP-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"descr\": \"\",\n            \"dn\": \"uni/infra/attentp-{{AEPNAME}}\",\n            \"name\": \"{{AEPNAME}}\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/l3dom-{{DOMAINNAME}}\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra.json"
+							]
+						},
+						"description": "AAEP addition"
+					},
+					"response": []
+				},
+				{
+					"name": "3_Physical-Domain-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/l3dom-{{DOMAINNAME}}\",\n      \"name\": \"{{DOMAINNAME}}\",\n      \"rn\": \"l3dom-{{DOMAINNAME}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-static\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/l3dom-{{DOMAINNAME}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"l3dom-{{DOMAINNAME}}.json"
+							]
+						},
+						"description": "Physical Domain"
+					},
+					"response": []
+				},
+				{
+					"name": "4_OSPF-Interface-Policy-Creation-Core",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ospfIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/ospfIfPol-MH-OSPF\",\n      \"name\": \"MH-OSPF\",\n      \"ctrl\": \"advert-subnet,mtu-ignore\",\n      \"nwT\": \"p2p\",\n      \"rn\": \"ospfIfPol-MH-OSPF\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ospfIfPol-MH-OSPF.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ospfIfPol-MH-OSPF.json"
+							]
+						},
+						"description": "Physical Domain"
+					},
+					"response": []
+				},
+				{
+					"name": "5_L3OUT-Attach-AEP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccPortGrp\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/funcprof/accportgrp-{{NODENAME-PORT}}\",\n      \"name\": \"{{NODENAME-PORT}}\",\n      \"rn\": \"accportgrp-{{NODENAME-PORT}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/attentp-{{AEPNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"tnFabricHIfPolName\": \"Speed-10Gb\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsCdpIfPol\": {\n          \"attributes\": {\n            \"tnCdpIfPolName\": \"CDP-On\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsMcpIfPol\": {\n          \"attributes\": {\n            \"tnMcpIfPolName\": \"default\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsLldpIfPol\": {\n          \"attributes\": {\n            \"tnLldpIfPolName\": \"LLDP-On\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accportgrp-{{NODENAME-PORT}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accportgrp-{{NODENAME-PORT}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_L3OUT-Interface-Selector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{IFPROFILE}}/hports-{{IFSELECTOR}}-typ-range\",\n      \"name\": \"{{IFSELECTOR}}\",\n      \"descr\": \"{{DESCRIPTION}}\",\n      \"rn\": \"hports-{{IFSELECTOR}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{IFPROFILE}}/hports-{{IFSELECTOR}}-typ-range/portblk-block2\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accportgrp-{{NODENAME-PORT}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFPROFILE}}/hports-{{IFSELECTOR}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFPROFILE}}",
+								"hports-{{IFSELECTOR}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7_L3OUT-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extOut\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}\",\n      \"name\": \"{{L3OUT-NAME}}\",\n      \"rn\": \"out-{{L3OUT-NAME}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"ospfExtP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/ospfExtP\",\n            \"areaId\": \"0\",\n            \"areaType\": \"regular\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extInstP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/instP-EPG_{{L3OUT-NAME}}\",\n            \"name\": \"EPG_{{L3OUT-NAME}}\",\n            \"rn\": \"instP-EPG_{{L3OUT-NAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extSubnet\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/instP-EPG_{{L3OUT-NAME}}/extsubnet-[0.0.0.0/0]\",\n                  \"ip\": \"0.0.0.0/0\",\n                  \"aggregate\": \"\",\n                  \"rn\": \"extsubnet-[0.0.0.0/0]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"l3extLNodeP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}\",\n            \"name\": \"{{NODENAME}}\",\n            \"rn\": \"lnodep-{{NODENAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extLIfP\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{NODENAME-PORT}}\",\n                  \"name\": \"{{NODENAME-PORT}}\",\n                  \"rn\": \"lifp-{{NODENAME-PORT}}\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"ospfIfP\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{NODENAME-PORT}}/ospfIfP\",\n                        \"rn\": \"ospfIfP\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": [\n                        {\n                          \"ospfRsIfPol\": {\n                            \"attributes\": {\n                              \"tnOspfIfPolName\": \"MH-OSPF\"\n                            },\n                            \"children\": []\n                          }\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"l3extRsPathL3OutAtt\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{NODENAME-PORT}}/rspathL3OutAtt-[topology/pod-1/paths-{{PATH}}]\",\n                        \"mtu\": \"9000\",\n                        \"mac\": \"00:22:BD:F8:19:FF\",\n                        \"ifInstT\": \"sub-interface\",\n                        \"encap\": \"vlan-{{VLAN}}\",\n                        \"mode\": \"regular\",\n                        \"addr\": \"{{IPADDRESS}}\",\n                        \"tDn\": \"topology/pod-1/paths-{{PATH}}\",\n                        \"rn\": \"rspathL3OutAtt-[topology/pod-1/paths-{{PATH}}]\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            },\n            {\n              \"l3extRsNodeL3OutAtt\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/rsnodeL3OutAtt-[topology/pod-1/node-{{NODEID}}]\",\n                  \"tDn\": \"topology/pod-1/node-{{NODEID}}\",\n                  \"rtrId\": \"{{ROUTERID}}\",\n                  \"rn\": \"rsnodeL3OutAtt-[topology/pod-1/node-{{NODEID}}]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"l3extInfraNodeP\": {\n                      \"attributes\": {\n                        \"fabricExtCtrlPeering\": \"false\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"l3extRsEctx\": {\n          \"attributes\": {\n            \"tnFvCtxName\": \"{{VRF}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsL3DomAtt\": {\n          \"attributes\": {\n            \"tDn\": \"uni/l3dom-{{DOMAINNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"out-{{L3OUT-NAME}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8_L3OUT-Default-Export",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rtctrlProfile\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/prof-default-export\",\n      \"name\": \"default-export\",\n      \"type\": \"global\",\n      \"rn\": \"prof-default-export\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/prof-default-export.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"out-{{L3OUT-NAME}}",
+								"prof-default-export.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "L3Out Firewall",
+			"item": [
+				{
+					"name": "1_VLAN-Pool-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvnsVlanInstP\": {\n    \"attributes\": {\n      \"allocMode\": \"static\",\n      \"descr\": \"\",\n      \"dn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-static\",\n      \"name\": \"{{VLANPOOL}}\",\n      \"ownerKey\": \"\",\n      \"ownerTag\": \"\"\n    },\n    \"children\": [\n      {\n        \"fvnsEncapBlk\": {\n          \"attributes\": {\n            \"allocMode\": \"inherit\",\n            \"descr\": \"\",\n            \"from\": \"vlan-3961\",\n            \"name\": \"\",\n            \"to\": \"vlan-3966\"\n          }\n        }\n      },\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/vlanns-[{{VLANPOOL}}]-static.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"vlanns-[{{VLANPOOL}}]-static.json"
+							]
+						},
+						"description": "VLAN Pool Add"
+					},
+					"response": []
+				},
+				{
+					"name": "2_AEP-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraInfra\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"infraAttEntityP\": {\n          \"attributes\": {\n            \"descr\": \"\",\n            \"dn\": \"uni/infra/attentp-{{AEPNAME}}\",\n            \"name\": \"{{AEPNAME}}\",\n            \"ownerKey\": \"\",\n            \"ownerTag\": \"\"\n          },\n          \"children\": [\n            {\n              \"infraRsDomP\": {\n                \"attributes\": {\n                  \"tDn\": \"uni/l3dom-{{DOMAINNAME}}\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra.json"
+							]
+						},
+						"description": "AAEP addition"
+					},
+					"response": []
+				},
+				{
+					"name": "3_Physical-Domain-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extDomP\": {\n    \"attributes\": {\n      \"dn\": \"uni/l3dom-{{DOMAINNAME}}\",\n      \"name\": \"{{DOMAINNAME}}\",\n      \"rn\": \"l3dom-{{DOMAINNAME}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsVlanNs\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/vlanns-[{{VLANPOOL}}]-static\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/l3dom-{{DOMAINNAME}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"l3dom-{{DOMAINNAME}}.json"
+							]
+						},
+						"description": "Physical Domain"
+					},
+					"response": []
+				},
+				{
+					"name": "4_OSPF-Interface-Policy-Firewall",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ospfIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common/ospfIfPol-MH-OSPF-FW\",\n      \"name\": \"MH-OSPF-FW\",\n      \"ctrl\": \"advert-subnet,mtu-ignore\",\n      \"nwT\":\"bcast\",\n      \"rn\": \"ospfIfPol-MH-OSPF-FW\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ospfIfPol-MH-OSPF-FW.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-common",
+								"ospfIfPol-MH-OSPF-FW.json"
+							]
+						},
+						"description": "Physical Domain"
+					},
+					"response": []
+				},
+				{
+					"name": "5_L3OUT-Attach-AEP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraAccBndlGrp\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/funcprof/accbundle-{{INTPOL}}\",\n      \"lagT\": \"node\",\n      \"name\": \"{{INTPOL}}\",\n      \"rn\": \"accbundle-{{INTPOL}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraRsAttEntP\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/attentp-{{AEPNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsHIfPol\": {\n          \"attributes\": {\n            \"tnFabricHIfPolName\": \"Speed-10Gb\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsCdpIfPol\": {\n          \"attributes\": {\n            \"tnCdpIfPolName\": \"CDP-On\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsMcpIfPol\": {\n          \"attributes\": {\n            \"tnMcpIfPolName\": \"default\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {  \n         \"infraRsLacpPol\":{  \n            \"attributes\":{  \n               \"tnLacpLagPolName\":\"LACP-Active\",\n                 \"status\":\"created,modified\"\n            },\n            \"children\":[  \n\n            ]\n         }\n      },      \n      {\n        \"infraRsLldpIfPol\": {\n          \"attributes\": {\n            \"tnLldpIfPolName\": \"LLDP-On\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/funcprof/accbundle-{{INTPOL}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"funcprof",
+								"accbundle-{{INTPOL}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_1_L3OUT-IFSelector-NODE1PORT1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR1}}-typ-range\",\n      \"name\": \"{{IFSELECTOR1}}\",\n      \"rn\": \"hports-{{IFSELECTOR1}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR1}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PORT1}}\",\n            \"toPort\": \"{{PORT1}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{INTPOL}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR1}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFPROFILE1}}",
+								"hports-{{IFSELECTOR1}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_2_L3OUT-IFSelector-NODE1PORT2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR2}}-typ-range\",\n      \"name\": \"{{IFSELECTOR2}}\",\n      \"rn\": \"hports-{{IFSELECTOR2}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR2}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PORT2}}\",\n            \"toPort\": \"{{PORT2}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{INTPOL}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFPROFILE1}}/hports-{{IFSELECTOR2}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFPROFILE1}}",
+								"hports-{{IFSELECTOR2}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_3_L3OUT-IFSelector-NODE2PORT1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR1}}-typ-range\",\n      \"name\": \"{{IFSELECTOR1}}\",\n      \"rn\": \"hports-{{IFSELECTOR1}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR1}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PORT1}}\",\n            \"toPort\": \"{{PORT1}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{INTPOL}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR1}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFPROFILE2}}",
+								"hports-{{IFSELECTOR1}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6_4_L3OUT-IFSelector-NODE2PORT2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR2}}-typ-range\",\n      \"name\": \"{{IFSELECTOR2}}\",\n      \"rn\": \"hports-{{IFSELECTOR2}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR2}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PORT2}}\",\n            \"toPort\": \"{{PORT2}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accbundle-{{INTPOL}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/infra/accportprof-{{IFPROFILE2}}/hports-{{IFSELECTOR2}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{IFPROFILE2}}",
+								"hports-{{IFSELECTOR2}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7_L3OUT-Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l3extOut\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}\",\n      \"name\": \"{{L3OUT-NAME}}\",\n      \"rn\": \"out-{{L3OUT-NAME}}\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"l3extLNodeP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}\",\n            \"name\": \"{{NODENAME}}\",\n            \"rn\": \"lnodep-{{NODENAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extLIfP\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{INTPROFILE}}\",\n                  \"name\": \"{{INTPROFILE}}\",\n                  \"rn\": \"lifp-{{INTPROFILE}}\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"ospfIfP\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{INTPROFILE}}/ospfIfP\",\n                        \"rn\": \"ospfIfP\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": [\n                      {\n                          \"ospfRsIfPol\": {\n                            \"attributes\": {\n                              \"tnOspfIfPolName\": \"MH-OSPF-FW\"\n                            },\n                            \"children\": []\n                          }\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"l3extRsPathL3OutAtt\": {\n                      \"attributes\": {\n                        \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/lifp-{{INTPROFILE}}/rspathL3OutAtt-[topology/pod-1/protpaths-1201-1202/pathep-[{{INTPOL}}]]\",\n                        \"mac\": \"00:22:BD:F8:19:FF\",\n                        \"ifInstT\": \"ext-svi\",\n                        \"encap\": \"vlan-{{VLAN}}\",\n                        \"mtu\": \"9000\",                        \n                        \"tDn\": \"topology/pod-1/protpaths-1201-1202/pathep-[{{INTPOL}}]\",\n                        \"rn\": \"rspathL3OutAtt-[topology/pod-1/protpaths-1201-1202/pathep-[{{INTPOL}}]]\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": [\n                        {\n                          \"l3extMember\": {\n                            \"attributes\": {\n                              \"addr\": \"{{IP1}}\",\n                              \"status\": \"created,modified\",\n                              \"side\": \"A\"\n                            },\n                            \"children\": []\n                          }\n                        },\n                        {\n                          \"l3extMember\": {\n                            \"attributes\": {\n                              \"side\": \"B\",\n                              \"addr\": \"{{IP2}}\",\n                              \"status\": \"created,modified\"\n                            },\n                            \"children\": []\n                          }\n                        }\n                      ]\n                    }\n                  }\n                ]\n              }\n            },\n            {\n              \"l3extRsNodeL3OutAtt\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/rsnodeL3OutAtt-[topology/pod-1/node-1201]\",\n                  \"tDn\": \"topology/pod-1/node-1201\",\n                  \"rtrId\": \"{{ROUTERID1}}\",\n                  \"rtrIdLoopBack\": \"true\",\n                  \"rn\": \"rsnodeL3OutAtt-[topology/pod-1/node-1201]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"l3extInfraNodeP\": {\n                      \"attributes\": {\n                        \"fabricExtCtrlPeering\": \"false\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            },\n            {\n              \"l3extRsNodeL3OutAtt\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/lnodep-{{NODENAME}}/rsnodeL3OutAtt-[topology/pod-1/node-1202]\",\n                  \"tDn\": \"topology/pod-1/node-1202\",\n                  \"rtrId\": \"{{ROUTERID2}}\",\n                  \"rtrIdLoopBack\": \"true\",\n                  \"rn\": \"rsnodeL3OutAtt-[topology/pod-1/node-1202]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": [\n                  {\n                    \"l3extInfraNodeP\": {\n                      \"attributes\": {\n                        \"fabricExtCtrlPeering\": \"false\",\n                        \"status\": \"created,modified\"\n                      },\n                      \"children\": []\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"l3extInstP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/instP-EPG_{{L3OUT-NAME}}\",\n            \"name\": \"EPG_{{L3OUT-NAME}}\",\n            \"rn\": \"instP-EPG_{{L3OUT-NAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": [\n            {\n              \"l3extSubnet\": {\n                \"attributes\": {\n                  \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/instP-EPG_{{L3OUT-NAME}}/extsubnet-[0.0.0.0/0]\",\n                  \"ip\": \"0.0.0.0/0\",\n                  \"aggregate\": \"\",\n                  \"rn\": \"extsubnet-[0.0.0.0/0]\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"ospfExtP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/ospfExtP\",\n            \"areaId\": \"0\",\n            \"areaType\": \"regular\",\n            \"rn\": \"ospfExtP\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsEctx\": {\n          \"attributes\": {\n            \"tnFvCtxName\": \"{{VRF}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"l3extRsL3DomAtt\": {\n          \"attributes\": {\n            \"tDn\": \"uni/l3dom-{{DOMAINNAME}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"out-{{L3OUT-NAME}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8_L3OUT-Default-Export",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rtctrlProfile\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/prof-default-export\",\n      \"name\": \"default-export\",\n      \"type\": \"global\",\n      \"rn\": \"prof-default-export\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/out-{{L3OUT-NAME}}/prof-default-export.json",
+							"protocol": "https",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{TENANT}}",
+								"out-{{L3OUT-NAME}}",
+								"prof-default-export.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

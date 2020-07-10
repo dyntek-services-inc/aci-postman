@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "e0ab9da8-d770-4a90-810b-d9bbd8731006",
+		"name": "STATICBINDING_CONTRACT_MANIPULATION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Remove VSAN ANP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvTenant\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"fvAp\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/ap-VSAN\",\n            \"status\": \"deleted\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-common.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-common.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove VSAN ALLOW ALL Contract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvTenant\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-common\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"vzBrCP\": {\n          \"attributes\": {\n            \"dn\": \"uni/tn-common/brc-VSAN_ALLOW_ALL_Con\",\n            \"status\": \"deleted\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-common.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-common.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Firmware Group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fabricInst\": {\n    \"attributes\": {\n      \"dn\": \"uni/fabric\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"firmwareFwGrp\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/fwgrp-3.2.4d\",\n            \"name\": \"3.2.4d\",\n            \"rn\": \"fwgrp-3.2.4d\",\n            \"status\": \"created\"\n          },\n          \"children\": [\n            {\n              \"firmwareRsFwgrpp\": {\n                \"attributes\": {\n                  \"tnFirmwareFwPName\": \"3.2.4d\",\n                  \"status\": \"created,modified\"\n                },\n                \"children\": []\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"firmwareFwP\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/fwpol-3.2.4d\",\n            \"ignoreCompat\": \"false\",\n            \"name\": \"3.2.4d\",\n            \"version\": \"n9000-13.2(4d)\",\n            \"rn\": \"fwpol-3.2.4d\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/fabric.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"fabric.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Nodes to Firmware Group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firmwareFwGrp\": {\n    \"attributes\": {\n      \"dn\": \"uni/fabric/fwgrp-3.2.4d\",\n      \"status\": \"modified\"\n    },\n    \"children\": [\n      {\n        \"fabricNodeBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/fabric/fwgrp-3.2.4d/nodeblk-blk{{NODEID}}-{{NODEID}}\",\n            \"name\": \"blk{{NODEID}}-{{NODEID}}\",\n            \"from_\": \"{{NODEID}}\",\n            \"to_\": \"{{NODEID}}\",\n            \"status\": \"created,modified\",\n            \"rn\": \"nodeblk-blk{{NODEID}}-{{NODEID}}\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/fabric/fwgrp-3.2.4d.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"fabric",
+						"fwgrp-3.2.4d.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "APP-PROFILE-BUILD",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"fvAp\":{  \n      \"attributes\":{  \n         \"dn\":\"uni/tn-common/ap-{{ANP}}\",\n         \"name\":\"{{ANP}}\",\n         \"rn\":\"ap-{{ANP}}\",\n         \"status\":\"created,modified\"\n      },\n      \"children\":[  \n\n      ]\n   }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ap-{{ANP}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-common",
+						"ap-{{ANP}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create EPG",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{TENANT}}/ap-{{ANP}}/epg-{{EPG}}\",\n      \"name\": \"{{EPG}}\",\n      \"prefGrMemb\": \"include\",\n      \"rn\": \"epg-{{EPG}}\",\n      \"status\": \"created\"\n    },\n    \"children\": [\n      {\n        \"fvRsBd\": {\n          \"attributes\": {\n            \"tnFvBDName\": \"{{BD}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"fvRsDomAtt\": {\n          \"attributes\": {\n            \"resImedcy\": \"immediate\",\n            \"tDn\": \"uni/phys-{{DOMAIN}}\",\n            \"status\": \"created\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{ANP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{ANP}}",
+						"epg-{{EPG}}.json"
+					]
+				},
+				"description": "\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Static Binding Single Port",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvRsPathAtt\": {\n    \"attributes\": {\n      \"encap\": \"vlan-{{VLAN}}\",\n      \"instrImedcy\": \"immediate\",\n      \"mode\": \"native\",\n      \"tDn\": \"topology/pod-{{POD}}/paths-{{NODE}}/pathep-[eth1/{{IFNUM}}]\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-common/ap-{{ANP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-common",
+						"ap-{{ANP}}",
+						"epg-{{EPG}}.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consume Contract from EPG",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvRsCons\": {\n    \"attributes\": {\n      \"tnVzBrCPName\": \"{{CONTRACT}}\"\n    },\n    \"children\": []\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{URL}}/api/node/mo/uni/tn-{{TENANT}}/ap-{{ANP}}/epg-{{EPG}}.json",
+					"protocol": "https",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-{{TENANT}}",
+						"ap-{{ANP}}",
+						"epg-{{EPG}}.json"
+					]
+				},
+				"description": "\n\n"
+			},
+			"response": []
+		}
+	]
+}
